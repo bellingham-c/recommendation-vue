@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import EIndexView from "@/components/eshop/IndexView";
 import CIndexView from "@/components/celebrity/IndexView";
-import RegisterView from "../components/login/RegisterPage"
+import RegisterPage from "../components/login/RegisterPage"
 import LoginPage from '../components/login/LoginPage'
 
 const routes = [
@@ -28,7 +28,7 @@ const routes = [
     {
         path: '/register',
         name: 'register',
-        component: RegisterView
+        component: RegisterPage
     },
     // {
     //   path: '/about',

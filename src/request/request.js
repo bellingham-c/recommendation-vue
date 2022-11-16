@@ -18,7 +18,7 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(error)
 })
 
-const ERequest = axios.create({
+export const ERequest = axios.create({
     baseURL: 'http://localhost:8830',
     headers: {
         'content-type': 'application/x-www-form-urlencoded',
@@ -26,7 +26,7 @@ const ERequest = axios.create({
     }
 })
 
-const CRequest = axios.create({
+export const CRequest = axios.create({
     baseURL: 'http://localhost:8800',
     headers: {
         'content-type': 'application/x-www-form-urlencoded',

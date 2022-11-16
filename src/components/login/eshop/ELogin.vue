@@ -20,16 +20,6 @@ const form = reactive({
 })
 
 const login = () => {
-  // axios({
-  //   method: 'post',
-  //   url: 'http://localhost:8800/login',
-  //   data: {
-  //     username: form.account,
-  //     password: form.password
-  //   }
-  // }).then((res) => {
-  //   console.log(res)
-  // })
   const params=new URLSearchParams()
   params.append("username",form.account)
   params.append("password",form.password)

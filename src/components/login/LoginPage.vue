@@ -1,6 +1,6 @@
 <template>
   <div style="position: absolute;top: 20px;left: 10px;">
-    <router-link style="text-decoration: none;" to="/">
+    <router-link style="text-decoration: none;" to="/register">
       <el-button style="font-size: 15px" type="primary">注册账号</el-button>
     </router-link>
   </div>
@@ -33,11 +33,7 @@ import CLogin from './celebrity/CLogin'
 
 const identify = ref(true)
 const change = (num) => {
-  if (num === 1) {
-    identify.value = true
-  } else {
-    identify.value = false
-  }
+  identify.value = num === 1;
   console.log(identify.value)
 }
 </script>

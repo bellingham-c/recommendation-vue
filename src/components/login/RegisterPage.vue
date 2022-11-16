@@ -18,7 +18,14 @@
         <el-input type="password" style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
                   v-model="form.password" placeholder="密码"/>
         <el-input type="password" style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
-                  v-model="form.checkPWD" placeholder="确认密码"/>
+                  v-model="checkPWD" placeholder="确认密码"/>
+        <el-form-item style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
+                      label="您的身份">
+          <el-radio-group v-model="identify">
+            <el-radio label="商家"/>
+            <el-radio label="网红"/>
+          </el-radio-group>
+        </el-form-item>
         <el-alert
             v-show="!isSame"
             style="width: 80%;height: 40px; margin-left: 10%;font-size: 25px; margin-top: 10px"
@@ -26,18 +33,19 @@
             description="两次密码不一致"
             show-icon
         />
-        <el-button style="width: 80%;height: 60px;margin-left: 10%;margin-top: 10px" type="primary">注册</el-button>
+        <el-button @click="onSubmit()" style="width: 80%;height: 60px;margin-left: 10%;margin-top: 10px" type="primary">注册</el-button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import {reactive} from 'vue'
-import {computed}  from "vue";
+import {ref,reactive} from 'vue'
+import {computed} from "vue";
+import {ERequest,CRequest} from '@/request/request'
 
-const isSame=computed(()=>{
-  return form.password===form.checkPWD;
+const isSame = computed(() => {
+  return form.password === checkPWD.value;
 })
 
 // do not use same name with ref
@@ -46,12 +54,20 @@ const form = reactive({
   nickname: '',
   tel: '',
   password: '',
-  checkPWD: ''
 })
 
-// const onSubmit = () => {
-//   console.log('submit!')
-// }
+const  checkPWD=ref("")
+const identify=ref("")
+
+const onSubmit = () => {
+  console.log('submit!')
+  console.log(identify)
+  if(identify.value==='商家'){
+    ERequest.post('/register',form)
+  }else {
+    CRequest.post('/register',form)
+  }
+}
 </script>
 
 <style scoped>
@@ -73,7 +89,7 @@ form {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 900px;
-  height: 600px;
+  height: 700px;
   border-radius: 20px;
   background-color: rgb(246, 246, 246, 0.6);
 }
