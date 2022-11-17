@@ -18,20 +18,23 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(error)
 })
 
-export const ERequest = axios.create({
-    baseURL: 'http://localhost:8830',
-    headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        Authorization: localStorage.getItem('token')
-    }
-})
+
+// export const ERequest = axios.create({
+//     baseURL: 'http://localhost:8830',
+//     headers: {
+//         // 'content-type': 'application/x-www-form-urlencoded',
+//         Authorization: localStorage.getItem('token')
+//     }
+// })
 
 export const CRequest = axios.create({
-    baseURL: 'http://localhost:8800',
     headers: {
-        'content-type': 'application/x-www-form-urlencoded',
+        // 'content-type': 'application/x-www-form-urlencoded',
         Authorization: localStorage.getItem('token')
-    }
+    },
+    baseURL: 'http://localhost:8830',
+
 })
 
-export default {ERequest,CRequest}
+// export default {ERequest,CRequest}
+export default {CRequest}

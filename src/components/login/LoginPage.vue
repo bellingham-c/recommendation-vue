@@ -34,7 +34,6 @@ import CLogin from './celebrity/CLogin'
 const identify = ref(true)
 const change = (num) => {
   identify.value = num === 1;
-  console.log(identify.value)
 }
 </script>
 <style scoped>

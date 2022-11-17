@@ -16,7 +16,7 @@
 
 <script setup>
 import {reactive} from "vue";
-import axios from 'axios'
+import {CRequest} from "@/request/request";
 
 const form = reactive({
   account: '',
@@ -24,16 +24,10 @@ const form = reactive({
 })
 
 const login = () => {
-  axios({
-    method: 'post',
-    url: 'http://localhost:8800/login',
-    data: {
-      username: form.account,
-      password: form.password
-    }
-  }).then((res) => {
-    console.log(res)
-  })
+  const params=new URLSearchParams()
+  params.append("username",form.account)
+  params.append("password",form.password)
+  CRequest.post('/login', params)
 }
 
 </script>
@@ -44,6 +38,7 @@ p {
   text-align: center;
   color: black;
 }
+
 img {
   width: 122px;
   height: 72px;

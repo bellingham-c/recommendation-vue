@@ -10,11 +10,11 @@
       <form>
         <p>欢迎加入我们</p>
         <el-input style="width: 80%;height: 60px; margin-left: 10%; font-size: 25px; margin-top: 10px"
-                  v-model="form.account" placeholder="账号"/>
+                  v-model="form.username" placeholder="账号"/>
         <el-input style="width: 80%;height: 60px; margin-left: 10%;font-size: 25px; margin-top: 10px"
-                  v-model="form.nickname" placeholder="昵称"/>
+                  v-model="form.name" placeholder="昵称"/>
         <el-input style="width: 80%;height: 60px; margin-left: 10%;font-size: 25px; margin-top: 10px"
-                  v-model="form.tel" placeholder="手机号"/>
+                  v-model="form.phonenumber" placeholder="手机号"/>
         <el-input type="password" style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
                   v-model="form.password" placeholder="密码"/>
         <el-input type="password" style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
@@ -50,9 +50,9 @@ const isSame = computed(() => {
 
 // do not use same name with ref
 const form = reactive({
-  account: '',
-  nickname: '',
-  tel: '',
+  username: '',
+  name: '',
+  phonenumber: '',
   password: '',
 })
 
@@ -60,12 +60,15 @@ const  checkPWD=ref("")
 const identify=ref("")
 
 const onSubmit = () => {
-  console.log('submit!')
-  console.log(identify)
+  const params=new URLSearchParams()
+  params.append("username",form.username)
+  params.append("name",form.name)
+  params.append("phonenumber",form.phonenumber)
+  params.append("password",form.password)
   if(identify.value==='商家'){
-    ERequest.post('/register',form)
+    ERequest.post('/register',params)
   }else {
-    CRequest.post('/register',form)
+    CRequest.post('/register',params)
   }
 }
 </script>
