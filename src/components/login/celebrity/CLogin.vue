@@ -16,7 +16,7 @@
 
 <script setup>
 import {reactive} from "vue";
-import {CRequest} from "@/request/request";
+import {CRequest} from "@/request/CRequest";
 
 const form = reactive({
   account: '',

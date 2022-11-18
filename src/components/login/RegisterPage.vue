@@ -42,7 +42,8 @@
 <script setup>
 import {ref,reactive} from 'vue'
 import {computed} from "vue";
-import {ERequest,CRequest} from '@/request/request'
+import {CRequest} from '@/request/CRequest'
+import ERequest from '../../request/ERequest'
 
 const isSame = computed(() => {
   return form.password === checkPWD.value;
