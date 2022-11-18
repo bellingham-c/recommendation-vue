@@ -10,20 +10,22 @@
     </video>
   </div>
   <div class="login">
-    <button
-        style="position: absolute;top: 10px;left:5px;z-index: 3;border: none;background-color: white;font-size: 25px"
-        @click="change(1)">点击进入网红登录
-    </button>
-    <button
-        style="position: absolute;top: 10px;right:5px;z-index: 3;border: none;background-color: white;font-size: 25px"
-        @click="change(2)">点击进入商家登录
-    </button>
+
     <template v-if="identify">
       <CLogin/>
     </template>
     <template v-if="!identify">
       <ELogin/>
     </template>
+    <button v-show="identify"
+            class="change"
+            @click="change(2)">点击进入商家登录
+    </button>
+    <button v-show="!identify"
+            class="change"
+            @click="change(1)">点击进入网红登录
+    </button>
+
   </div>
 </template>
 <script setup>
@@ -37,14 +39,24 @@ const change = (num) => {
 }
 </script>
 <style scoped>
-
+.change {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  right: 5px;
+  z-index: 3;
+  background-color: #79bbff;
+  border: none;
+  border-radius: 5px;
+  font-size: 25px;
+  width: 80%;
+  height: 60px;
+}
 a {
   width: 20%;
   margin-top: 20px;
   margin-left: 40%;
 }
-
-
 .login {
   position: absolute;
   top: 50%;
@@ -55,7 +67,6 @@ a {
   border-radius: 20px;
   background-color: white;
 }
-
 .videoContainer {
   position: fixed;
   width: 100%;
@@ -63,7 +74,6 @@ a {
   overflow: hidden;
   z-index: -100;
 }
-
 .videoContainer:before {
   content: "";
   position: absolute;
@@ -75,7 +85,6 @@ a {
   left: 0;
   background: rgba(25, 29, 34, .65);
 }
-
 video {
   position: fixed;
   right: 0;

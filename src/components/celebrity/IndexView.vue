@@ -1,5 +1,5 @@
 <template>
-<div>两个用户共用一个index界面</div>
+<div>celebrity index界面</div>
 </template>
 
 <script>

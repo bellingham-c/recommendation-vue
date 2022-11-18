@@ -12,8 +12,8 @@
 
 <script setup>
 import {reactive} from "vue";
-// import CRequest from '@/request/request'
-import axios from 'axios'
+import ERequest from '@/request/ERequest'
+import router from "@/router";
 
 const form = reactive({
   account: '',
@@ -21,17 +21,12 @@ const form = reactive({
 })
 
 const login = () => {
-  // const params=new URLSearchParams()
-  // params.append("username",form.account)
-  // params.append("password",form.password)
-  // CRequest.post('/login', params)
-  console.log(1)
-  axios({
-    url:'http://localhost:8830/login',
-    method:'post',
-    data:{
-      username:form.account,
-      password:form.password
+  const params=new URLSearchParams()
+  params.append("username",form.account)
+  params.append("password",form.password)
+  ERequest.post('/login',params).then((res)=>{
+    if (res.data.code===1){
+      router.push('/eindex')
     }
   })
 }

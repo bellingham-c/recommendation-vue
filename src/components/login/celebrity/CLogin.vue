@@ -17,6 +17,7 @@
 <script setup>
 import {reactive} from "vue";
 import {CRequest} from "@/request/CRequest";
+import router from '../../../router/index'
 
 const form = reactive({
   account: '',
@@ -27,7 +28,11 @@ const login = () => {
   const params=new URLSearchParams()
   params.append("username",form.account)
   params.append("password",form.password)
-  CRequest.post('/login', params)
+  CRequest.post('/login', params).then((res)=>{
+    if (res.data.code===1){
+      router.push('/cindex')
+    }
+  })
 }
 
 </script>

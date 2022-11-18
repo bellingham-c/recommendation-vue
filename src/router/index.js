@@ -13,13 +13,13 @@ const routes = [
     // 电商路由
     {
         path: '/eindex',
-        name: 'index',
+        name: 'eindex',
         component: EIndexView
     },
     // 网红路由
     {
         path: '/cindex',
-        name: 'index',
+        name: 'cindex',
         component: CIndexView
     },
     // 登录路由
