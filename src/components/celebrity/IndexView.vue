@@ -1,5 +1,10 @@
 <template>
-<div>celebrity index界面</div>
+  <div class="common-layout">
+    <el-container>
+      <el-header style="background-color: red">Header</el-header>
+      <el-main style="background-color: yellow">Main</el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
