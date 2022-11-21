@@ -3,6 +3,12 @@ import EIndexView from "@/components/eshop/IndexView";
 import CIndexView from "@/components/celebrity/IndexView";
 import RegisterPage from "../components/login/RegisterPage"
 import LoginPage from '../components/login/LoginPage'
+import IndexMain from '../components/celebrity/children/IndexMain'
+import GoodRecommend from '../components/celebrity/children/GoodRecommend'
+import FindEshop from "../components/celebrity/children/FindEshop";
+import MySelf from '../components/celebrity/children/MySelf'
+
+
 
 const routes = [
     {
@@ -12,15 +18,34 @@ const routes = [
     },
     // 电商路由
     {
-        path: '/eindex',
-        name: 'eindex',
+        path: '/eshop',
+        name: 'eshop',
         component: EIndexView
+
     },
     // 网红路由
     {
-        path: '/cindex',
-        name: 'cindex',
-        component: CIndexView
+        path: '/celebrity',
+        name: 'celebrity',
+        component: CIndexView,
+        children:[
+            {
+                path:'index',
+                component:IndexMain
+            },
+            {
+                path:'recommend',
+                component: GoodRecommend
+            },
+            {
+                path:'myself',
+                component: MySelf
+            },
+            {
+                path:'find',
+                component: FindEshop
+            }
+        ]
     },
     // 登录路由
 
