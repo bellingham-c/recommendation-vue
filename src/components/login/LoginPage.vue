@@ -34,6 +34,7 @@ import ELogin from './eshop/ELogin'
 import CLogin from './celebrity/CLogin'
 
 const identify = ref(true)
+
 const change = (num) => {
   identify.value = num === 1;
 }
