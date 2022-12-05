@@ -25,7 +25,6 @@
             class="change"
             @click="change(1)">点击进入网红登录
     </button>
-
   </div>
 </template>
 <script setup>
