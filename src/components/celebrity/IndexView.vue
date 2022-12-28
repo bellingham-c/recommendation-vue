@@ -28,33 +28,32 @@
           <div class="exit">
             <div>
               <img src="../../assets/img/whb.png" alt="">
-
             </div>
             <div>
-              <el-button>退出</el-button>
+              <el-button @click="quit">退出</el-button>
             </div>
           </div>
-
-
         </div>
       </el-header>
-      <el-main style="background-color: yellow">Main
-      <router-view/>
+
+      <el-main style="margin-left: 20%;margin-right: 20%;">
+        <router-view/>
       </el-main>
     </el-container>
   </div>
 </template>
 
-<script>
-export default {
-  name: "IndexView"
+<script setup>
+const quit = () => {
+  console.log(666)
 }
 </script>
 
 <style scoped>
-a{
+a {
   text-decoration: none;
 }
+
 .header {
   display: flex;
   flex-direction: row;
