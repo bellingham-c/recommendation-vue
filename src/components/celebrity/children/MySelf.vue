@@ -5,7 +5,6 @@
         <el-col :span="6">
           <div class="grid-content ep-bg-purple"/>
           id和头像
-
         </el-col>
         <el-col :span="6">
           <div class="grid-content ep-bg-purple"/>
