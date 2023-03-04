@@ -161,6 +161,7 @@ const tableData = ref(Array.from({length: 30}).fill(item))
 </script>
 
 <style scoped>
+
 svg {
   width: 20px;
   height: 20px;
