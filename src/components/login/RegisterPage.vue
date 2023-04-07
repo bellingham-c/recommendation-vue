@@ -95,15 +95,18 @@ const onSubmit = () => {
   params.append("phonenumber", form.phonenumber)
   params.append("password", form.password)
   if (identify.value === '商家') {
-    ERequest.post('/register', params).then((res) => {
+    ERequest.post('/api/auth/register', params).then((res) => {
       if (res.data.code === '1') {
+        console.log(res.data)
         alert("注册成功！")
       } else {
+        console.log(res.data)
+
         alert("注册失败！")
       }
     })
   } else {
-    CRequest.post('/register', params).then((res) => {
+    CRequest.post('/api/auth/register', params).then((res) => {
       if (res.data.code === '1') {
         alert("注册成功！")
       } else {
