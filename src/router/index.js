@@ -7,6 +7,7 @@ import IndexMain from '../components/celebrity/children/IndexMain'
 import GoodRecommend from '../components/celebrity/children/GoodRecommend'
 import FindEshop from "../components/celebrity/children/FindEshop";
 import MySelf from '../components/celebrity/children/MySelf'
+import EshopIndexView from "../components/eshop/IndexView.vue"
 
 
 
@@ -16,11 +17,17 @@ const routes = [
         name: 'login',
         component: LoginPage
     },
-    // 电商路由
+    // 商家路由
     {
         path: '/eshop',
         name: 'eshop',
-        component: EIndexView
+        component: EIndexView,
+        children:[
+            {
+                path:'index',
+                component:EshopIndexView
+            }
+        ]
 
     },
     // 网红路由

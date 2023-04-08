@@ -14,7 +14,7 @@ axios.interceptors.response.use(function (response){
 })
 
 export const ERequest = axios.create({
-    baseURL: 'http://localhost:1016',
+    baseURL: 'http://localhost:1016/eshop',
     headers: {
         // 'content-type': 'application/x-www-form-urlencoded',
         Authorization: localStorage.getItem('token')

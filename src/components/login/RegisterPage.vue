@@ -60,8 +60,8 @@
 <script setup>
 import {ref, reactive} from 'vue'
 import {computed} from "vue";
-import {CRequest} from '@/request/CRequest'
 import ERequest from '../../request/ERequest'
+import CRequest from '../../request/CRequest'
 
 const isSame = computed(() => {
   return form.password === checkPWD.value;
@@ -95,8 +95,8 @@ const onSubmit = () => {
   params.append("phonenumber", form.phonenumber)
   params.append("password", form.password)
   if (identify.value === '商家') {
-    ERequest.post('/api/auth/register', params).then((res) => {
-      if (res.data.code === '1') {
+    ERequest.post('/register', params).then((res) => {
+      if (res.data.code === 200) {
         console.log(res.data)
         alert("注册成功！")
       } else {
@@ -106,8 +106,8 @@ const onSubmit = () => {
       }
     })
   } else {
-    CRequest.post('/api/auth/register', params).then((res) => {
-      if (res.data.code === '1') {
+    CRequest.post('/register', params).then((res) => {
+      if (res.data.code === 200) {
         alert("注册成功！")
       } else {
         alert("注册失败！")
