@@ -13,12 +13,12 @@ axios.interceptors.response.use(function (response){
     return Promise.reject(error)
 })
 
-export const ERequest = axios.create({
-    baseURL: 'http://localhost:1016/eshop',
+export const CRequest = axios.create({
+    baseURL: 'http://localhost:1016/celebrity',
     headers: {
         // 'content-type': 'application/x-www-form-urlencoded',
         Authorization: localStorage.getItem('token')
     }
 })
 
-export default ERequest
+export default CRequest

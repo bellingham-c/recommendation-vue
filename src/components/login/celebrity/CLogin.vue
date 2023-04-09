@@ -29,8 +29,8 @@ const login = () => {
   params.append("username", form.account)
   params.append("password", form.password)
   CRequest.post('/login', params).then((res) => {
-    if (res.data.code === 1) {
-      router.push('/celebrity/index')
+    if (res.data.code === 200) {
+      router.push('/celebrity')
     }
   })
 }

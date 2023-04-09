@@ -7,25 +7,40 @@ import IndexMain from '../components/celebrity/children/IndexMain'
 import GoodRecommend from '../components/celebrity/children/GoodRecommend'
 import FindEshop from "../components/celebrity/children/FindEshop";
 import MySelf from '../components/celebrity/children/MySelf'
-import EshopIndexView from "../components/eshop/IndexView.vue"
-
+import FindCooperation from "@/components/eshop/children/FindCooperation.vue";
+import productUpdate from "@/components/eshop/children/ProductUpdate.vue";
+import treatyInfo from "@/components/eshop/children/TreatyInfo.vue";
+import shopInfo from "@/components/eshop/children/ShopInfo.vue";
+import IndexRecommend from "@/components/eshop/children/IndexRecommend.vue";
 
 
 const routes = [
-    {
-        path: '/',
-        name: 'login',
-        component: LoginPage
-    },
+
     // 商家路由
     {
         path: '/eshop',
         name: 'eshop',
         component: EIndexView,
-        children:[
+        children: [
             {
-                path:'index',
-                component:EshopIndexView
+                path: '',
+                component: IndexRecommend
+            },
+            {
+                path: 'find',
+                component: FindCooperation,
+            },
+            {
+                path: 'product',
+                component: productUpdate
+            },
+            {
+                path: 'treaty',
+                component: treatyInfo
+            },
+            {
+                path: "myself",
+                component: shopInfo,
             }
         ]
 
@@ -35,27 +50,31 @@ const routes = [
         path: '/celebrity',
         name: 'celebrity',
         component: CIndexView,
-        children:[
+        children: [
             {
-                path:'index',
-                component:IndexMain
+                path: '',
+                component: IndexMain
             },
             {
-                path:'recommend',
+                path: 'recommend',
                 component: GoodRecommend
             },
             {
-                path:'myself',
+                path: 'myself',
                 component: MySelf
             },
             {
-                path:'find',
+                path: 'find',
                 component: FindEshop
             }
         ]
     },
     // 登录路由
-
+    {
+        path: '/',
+        name: 'login',
+        component: LoginPage
+    },
     // 注册路由
     {
         path: '/register',

@@ -30,7 +30,7 @@ const login = () => {
   params.append("password", form.password)
   ERequest.post('/login', params).then((res) => {
     if (res.data.code === 200) {
-      router.push('/eshop/index')
+      router.push('/eshop')
     }
   })
 }
