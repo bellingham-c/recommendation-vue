@@ -12,6 +12,8 @@ import productUpdate from "@/components/eshop/children/ProductUpdate.vue";
 import treatyInfo from "@/components/eshop/children/TreatyInfo.vue";
 import shopInfo from "@/components/eshop/children/ShopInfo.vue";
 import IndexRecommend from "@/components/eshop/children/IndexRecommend.vue";
+import myselfInfo from "@/components/eshop/shopinfo/MyselfInfo.vue";
+import myOrder from "@/components/eshop/shopinfo/MyOrder.vue";
 
 
 const routes = [
@@ -41,6 +43,16 @@ const routes = [
             {
                 path: "myself",
                 component: shopInfo,
+                children:[
+                    {
+                        path:'info',
+                        component:myselfInfo
+                    } ,
+                    {
+                        path:'order',
+                        component:myOrder
+                    }
+                ]
             }
         ]
 
