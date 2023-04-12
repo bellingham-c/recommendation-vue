@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import ERequest from '@/request/ERequest'
 import router from "@/router";
 
@@ -31,9 +31,16 @@ const login = () => {
   ERequest.post('/login', params).then((res) => {
     if (res.data.code === 200) {
       router.push('/eshop')
+      localStorage.setItem('token', res.data.data.token)
     }
   })
 }
+
+onMounted(() => {
+  ERequest.post('/info').catch((err) => {
+    console.log(err)
+  })
+})
 
 </script>
 

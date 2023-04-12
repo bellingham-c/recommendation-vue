@@ -1,53 +1,18 @@
 <template>
   <div>
-    <div>
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          id和头像
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          我的收货地址
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          3
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          4
-        </el-col>
-      </el-row>
-    </div>
-
-    <div>
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          待付款
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          代发货
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          待收货
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content ep-bg-purple"/>
-          待评价
-        </el-col>
-      </el-row>
-    </div>
+    <button @click="test()">dianwo</button>
   </div>
 </template>
 
 <script setup>
-// const address=()=>{
-//
-// }
+import CRequest from "@/request/CRequest";
+
+const test = () => {
+  CRequest.get('/find').then((res) => {
+    console.log(res)
+    console.log(res.data)
+  })
+}
 </script>
 
 <style scoped>

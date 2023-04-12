@@ -1,18 +1,5 @@
 import axios from 'axios'
 
-axios.interceptors.request.use(function (config){
-  return config
-},function (error){
-    return Promise.reject(error)
-})
-
-axios.interceptors.response.use(function (response){
-    return response
-}, function(error){
-    console.log(error)
-    return Promise.reject(error)
-})
-
 export const ERequest = axios.create({
     baseURL: 'http://localhost:1016/eshop',
     headers: {
@@ -20,5 +7,24 @@ export const ERequest = axios.create({
         Authorization: localStorage.getItem('token')
     }
 })
+
+ERequest.interceptors.request.use(function (config) {
+    if (localStorage.getItem('token')) {
+        config.headers = {
+            'Authorization': localStorage.getItem('token'), //携带权限参数
+        };
+    }
+    return config
+}, function (error) {
+    return Promise.reject(error)
+})
+axios.interceptors.response.use(function (response){
+    return response
+}, function(error){
+    console.log(error)
+    return Promise.reject(error)
+})
+
+
 
 export default ERequest

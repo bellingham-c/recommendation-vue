@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import {reactive} from "vue";
+import { reactive} from "vue";
 import router from '../../../router/index'
 import CRequest from "@/request/CRequest";
 
@@ -31,8 +31,10 @@ const login = () => {
   CRequest.post('/login', params).then((res) => {
     if (res.data.code === 200) {
       router.push('/celebrity')
+      localStorage.setItem('token',res.data.data.token)
     }
   })
+  console.log(111)
 }
 
 </script>
