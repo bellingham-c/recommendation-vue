@@ -81,6 +81,15 @@
 </template>
 
 <script setup>
+import {onMounted} from "vue";
+import ERequest from "@/request/ERequest";
+
+
+onMounted(() => {
+  ERequest.post('/info').catch((err) => {
+    console.log(err)
+  })
+})
 
 </script>
 

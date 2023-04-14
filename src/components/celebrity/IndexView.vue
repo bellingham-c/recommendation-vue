@@ -74,6 +74,7 @@
 import {onMounted} from "vue";
 import CRequest from "@/request/CRequest";
 
+
 onMounted(()=>{
   CRequest.post('/info').catch((err) => {
     console.log(err)

@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from "vue";
+import {reactive} from "vue";
 import ERequest from '@/request/ERequest'
 import router from "@/router";
 
@@ -35,12 +35,6 @@ const login = () => {
     }
   })
 }
-
-onMounted(() => {
-  ERequest.post('/info').catch((err) => {
-    console.log(err)
-  })
-})
 
 </script>
 

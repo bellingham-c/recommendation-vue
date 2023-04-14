@@ -9,7 +9,6 @@ CRequest.interceptors.request.use(function (config) {
     if (localStorage.getItem('token')) {
         config.headers = {
             'Authorization': 'Bearer' + localStorage.getItem('token'), //携带权限参数
-            'Content-Type': 'application/json'
         };
     }
     return config
