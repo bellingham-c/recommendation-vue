@@ -9,28 +9,26 @@
     <el-descriptions
         title="我的信息"
         :column="4"
-        :size="size"
         direction="vertical"
-        :style="blockMargin"
     >
-      <el-descriptions-item label="Username">kooriookami</el-descriptions-item>
-      <el-descriptions-item label="Telephone">18100000000</el-descriptions-item>
-      <el-descriptions-item label="Place" :span="2">Suzhou</el-descriptions-item>
-      <el-descriptions-item label="Sex">men</el-descriptions-item>
-      <el-descriptions-item label="Age" :span="2">18</el-descriptions-item>
-      <el-descriptions-item label="Remarks">
+      <el-descriptions-item label="账号">{{ info.arr.username }}</el-descriptions-item>
+      <el-descriptions-item label="昵称">{{ info.arr.name }}</el-descriptions-item>
+      <el-descriptions-item label="电话">{{ info.arr.phonenumber }}</el-descriptions-item>
+      <el-descriptions-item label="地址" :span="2">Suzhou</el-descriptions-item>
+      <el-descriptions-item label="性别">{{ info.arr.Sex }}</el-descriptions-item>
+      <el-descriptions-item label="年龄" :span="2">{{ info.arr.Age }}</el-descriptions-item>
+      <el-descriptions-item label="标签">
         <el-tag size="small">School</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="Address"
-      >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+      <el-descriptions-item label="个人简介">{{ info.arr.Intro }}
       </el-descriptions-item>
     </el-descriptions>
+    <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="centerDialogVisible=true">修改个人信息
+    </el-button>
     <el-descriptions
         title="信誉积分"
         :column="4"
-        :size="size"
         direction="vertical"
-        :style="blockMargin"
     >
     </el-descriptions>
     <el-row>
@@ -49,36 +47,65 @@
             <span>Yummy hamburger</span>
             <div class="bottom">
               <time class="time">{{ currentDate }}</time>
-              <el-button text class="button">Operating</el-button>
+              <el-button text class="button" @click="test()">Operating</el-button>
             </div>
           </div>
         </el-card>
       </el-col>
     </el-row>
   </div>
+  <!--  弹窗-->
+  <div v-show="true">
+    asd
+    <el-dialog title="修改信息" width="35%" top="20vh" center>
+      <div>
+        lihao
+      </div>
+      <div>
+        ???
+      </div>
+    </el-dialog>
+  </div>
+
 </template>
 
 <script setup>
 import CRequest from "@/request/CRequest";
-import {onMounted} from "vue";
+import {onBeforeMount, reactive,} from "vue";
 
-onMounted((() => {
+let centerDialogVisible = false
+
+
+
+let info = reactive({
+  arr: []
+})
+
+const test = () => {
+  console.log(info.arr.username)
+}
+
+onBeforeMount((() => {
   CRequest.get('/find').then((res) => {
-    console.log(res)
-    console.log(res.data)
+    // info = res.data.data.data
+    console.log(res.data.data.data)
+    console.log(typeof res.data.data.data)
+    info.arr = res.data.data.data
   })
 }))
 </script>
 
 <style scoped>
-.el-row{
+.el-row {
   margin-top: 20px;
   margin-left: 20px;
 }
+
 .el-descriptions {
   margin-top: 20px;
   margin-left: 20px;
 }
+
 .header {
   margin: 10px 10% 20px 15%;
 }

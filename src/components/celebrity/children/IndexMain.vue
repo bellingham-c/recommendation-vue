@@ -18,7 +18,7 @@ import CRequest from "@/request/CRequest";
 
 
 onBeforeMount(() => {
-  CRequest.get('getAllUsers').then((res) => {
+  CRequest.get('/getAllUsers').then((res) => {
     this.allGoods = res.data
   })
 })

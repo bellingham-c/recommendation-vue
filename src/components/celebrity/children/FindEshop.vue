@@ -1,22 +1,15 @@
 <template>
-  <div>
-    <!--        商品展示区-->
-    <div id="goodsDisplay" style="position: relative;top: 20px">
-      <input v-model="searchData" type="text" placeholder="请输入您要查找的商品名称">
-      <button @click="fuzzySearch()">查找</button>
-      <div class="card">
-        <div class="card-box"
-             v-for="g in allGoods" :key="g">
-          <img :src="g.img" style="width: 250px;height: 250px;" alt="">
-          <div style="width: 250px;height: 250px;">
-            店铺：{{ g.eshopName }}<br>
-            {{ g.intro }}<br>
-            市场价：{{ g.marketPrice }}<br>
-            平台价：{{ g.celebrityPrice }}<br>
-          </div>
-          <div>
-            <button @click="makeContract(g.goodId,g.eshopAccount)" style="bottom: 10px">立即购买</button>
-          </div>
+  <div class="wrap">
+    <div class="card_wrap">
+      <div class="card_item">
+        <img class="card_content_img" src="@/assets/img/regBack.jpg">
+        <div>名字</div>
+        <div>性别</div>
+        <div>主要代理</div>
+        <div>常驻平台</div>
+        <div>
+          <button>查看详情</button>
+          <button>合作</button>
         </div>
       </div>
     </div>
@@ -24,15 +17,8 @@
 </template>
 
 <script setup>
-import {onBeforeMount, reactive, ref} from "vue";
+import {onBeforeMount} from "vue";
 import CRequest from "@/request/CRequest";
-import router from "@/router";
-
-const allGoods = reactive({
-  allGoods: []
-})
-
-const searchData = ref('test')
 
 onBeforeMount(() => {
   CRequest.get('getAllGoods').then((res) => {
@@ -40,45 +26,42 @@ onBeforeMount(() => {
   })
 })
 
-const makeContract = (goodId, account) => {
-  const params = new URLSearchParams()
-  params.append("goodId", goodId)
-  params.append("account", account)
-  var flag = confirm("您确定要购买吗？")
-  if (flag) {
-    CRequest.post('/login', params).then((res) => {
-      if (res.data.code === 200) {
-        router.push('/celebrity')
-        localStorage.setItem('token', res.data.data.token)
-      }
-    })
-  }
-}
-const fuzzySearch = () => {
-  CRequest.post('/login', searchData).then((res) => {
-    if (res.data.code === 200) {
-      router.push('/celebrity')
-      localStorage.setItem('token', res.data.data.token)
-    }
-  })
-}
 </script>
 
 <style scoped>
-.card-box {
+.wrap {
+  /*这个只是让整体在页面居中展示 */
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 8px;
 }
 
-.card {
+.card_wrap {
+  /*卡片容器 */
   display: flex;
-  flex-flow: wrap;
-  margin: 10px;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+  width: 100%;
+}
+
+.card_item {
+  /*每个卡片 */
+  /*flex-basis: 25%;*/
+  margin-bottom: 16px;
+  padding: 0 8px;
+  width: 278px;
+  height: 350px;
+  background-color: blue;
+}
+
+.card_content_img {
+  /*卡片内容 */
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  height: 220px;
+  width: 100%;
+  background-color: red;
 }
 </style>
