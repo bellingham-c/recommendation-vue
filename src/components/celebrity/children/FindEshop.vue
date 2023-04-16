@@ -1,12 +1,12 @@
 <template>
   <div class="wrap">
-    <div class="card_wrap">
+    <div class="card_wrap" v-for="user in user.arr" :key="user">
       <div class="card_item">
         <img class="card_content_img" src="@/assets/img/regBack.jpg">
-        <div>名字</div>
-        <div>性别</div>
-        <div>主要代理</div>
-        <div>常驻平台</div>
+        <div>名字:{{ user.name }}</div>
+        <div>年龄:{{ user.Age }}</div>
+        <div>电话:{{ user.phonenumber }}</div>
+        <div>常驻平台:{{ user.Platform }}</div>
         <div>
           <button>查看详情</button>
           <button>合作</button>
@@ -17,12 +17,18 @@
 </template>
 
 <script setup>
-import {onBeforeMount} from "vue";
+import {onBeforeMount, reactive} from "vue";
 import CRequest from "@/request/CRequest";
 
+let user = reactive({
+  arr: []
+})
+
+
 onBeforeMount(() => {
-  CRequest.get('getAllGoods').then((res) => {
-    this.allGoods = res.data
+  CRequest.get('/findAll').then((res) => {
+    user.arr = res.data.data.data
+    console.log(user.arr)
   })
 })
 
@@ -32,28 +38,30 @@ onBeforeMount(() => {
 .wrap {
   /*这个只是让整体在页面居中展示 */
   display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
   align-items: center;
-  flex-direction: column;
   height: 100%;
-  width: 100%;
   padding: 8px;
 }
 
 .card_wrap {
   /*卡片容器 */
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
+  padding: 10px;
 }
 
 .card_item {
   /*每个卡片 */
-  /*flex-basis: 25%;*/
   margin-bottom: 16px;
   padding: 0 8px;
   width: 278px;
   height: 350px;
-  background-color: blue;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+.card_item:hover {
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.5);
 }
 
 .card_content_img {

@@ -17,9 +17,8 @@
       <el-descriptions-item label="地址" :span="2">Suzhou</el-descriptions-item>
       <el-descriptions-item label="性别">{{ info.arr.Sex }}</el-descriptions-item>
       <el-descriptions-item label="年龄" :span="2">{{ info.arr.Age }}</el-descriptions-item>
-      <el-descriptions-item label="标签">
-        <el-tag size="small">School</el-tag>
-      </el-descriptions-item>
+      <el-descriptions-item label="常驻平台" :span="2">{{ info.arr.Platform }}</el-descriptions-item>
+      <el-descriptions-item label="平台地址" :span="2">{{ info.arr.PlatformUrl }}</el-descriptions-item>
       <el-descriptions-item label="个人简介">{{ info.arr.Intro }}
       </el-descriptions-item>
     </el-descriptions>
@@ -55,31 +54,89 @@
     </el-row>
   </div>
   <!--  弹窗-->
-  <div v-show="true">
-    asd
-    <el-dialog title="修改信息" width="35%" top="20vh" center>
-      <div>
-        lihao
+  <div class="mask" v-if="centerDialogVisible">
+    <div class="box">
+      <div class="little-box">
+        <div style="width: 40px">账号</div>
+        <el-input v-model="info.arr.username" disabled placeholder="账号"/>
       </div>
-      <div>
-        ???
+      <div class="little-box">
+        <div style="width: 40px">昵称</div>
+        <el-input v-model="info.arrname" placeholder="昵称"/>
       </div>
-    </el-dialog>
+      <div class="little-box">
+        <div style="width: 40px">电话</div>
+        <el-input v-model="info.arr.phonenumber" placeholder="电话"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">住址</div>
+        <el-input v-model="input" placeholder="住址"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">性别</div>
+        <el-select v-model="info.arr.Sex" class="m-2" placeholder="性别" size="large">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">年龄</div>
+        <el-input v-model="info.arr.Age" placeholder="年龄"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">常驻平台</div>
+        <el-input v-model="info.arr.Platform" placeholder="常驻平台"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">平台地址</div>
+        <el-input v-model="info.arr.PlatformUrl" placeholder="平台地址"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">个人简介</div>
+        <el-input v-model="info.arr.Intro" placeholder="个人简介"/>
+      </div>
+      <el-button @click="centerDialogVisible=false">关闭</el-button>
+      <el-button @click="updateInfo()">修改</el-button>
+    </div>
+
   </div>
 
 </template>
 
 <script setup>
 import CRequest from "@/request/CRequest";
-import {onBeforeMount, reactive,} from "vue";
+import {onBeforeMount, reactive, ref,} from "vue";
 
-let centerDialogVisible = false
-
-
+let centerDialogVisible = ref(false)
 
 let info = reactive({
   arr: []
 })
+
+const options = [
+  {
+    value: '男',
+    label: '男',
+  },
+  {
+    value: '女',
+    label: '女',
+  },
+  {
+    value: '其他',
+    label: '其他',
+  }
+]
+
+const updateInfo = () => {
+  CRequest.post('/updateInfo', info.arr).then((res) => {
+    console.log(res)
+  })
+}
 
 const test = () => {
   console.log(info.arr.username)
@@ -87,15 +144,38 @@ const test = () => {
 
 onBeforeMount((() => {
   CRequest.get('/find').then((res) => {
-    // info = res.data.data.data
-    console.log(res.data.data.data)
-    console.log(typeof res.data.data.data)
     info.arr = res.data.data.data
   })
 }))
 </script>
 
 <style scoped>
+.little-box {
+  padding: 10px;
+  margin: 3px;
+  display: flex;
+  flex-direction: row;
+}
+
+.box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  width: 30%;
+}
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .el-row {
   margin-top: 20px;
   margin-left: 20px;
