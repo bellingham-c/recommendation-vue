@@ -18,6 +18,7 @@
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
+        <img src="@/assets/img/regBack.jpg" style="width: 50px;height: 50px">
       <div class="little-box">
         <div style="width: 40px">账号</div>
         <el-input v-model="tempInfo.arr.username" disabled placeholder="账号"/>
@@ -84,10 +85,8 @@ let tempInfo = reactive({
 })
 
 const test = (user) => {
-  console.log(centerDialogVisible)
   tempInfo.arr = user
   centerDialogVisible.value = true
-  console.log(centerDialogVisible)
 }
 
 onBeforeMount(() => {
