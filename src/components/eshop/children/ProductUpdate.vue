@@ -22,21 +22,62 @@
   <!--  添加弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
-      <div class="little-box">
-        <div style="width: 40px">商品名</div>
-        <el-input v-model="tempInfo.arr.username" disabled placeholder="商品名"/>
-      </div>
+<!--      <div class="little-box">-->
+<!--        <div style="width: 40px">图片</div>-->
+<!--        <el-upload action="#" list-type="picture-card" :auto-upload="false">-->
+<!--          <el-icon><Plus /></el-icon>-->
+
+<!--          <template #file="{ file }">-->
+<!--            <div>-->
+<!--              <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />-->
+<!--              <span class="el-upload-list__item-actions">-->
+<!--          <span-->
+<!--              class="el-upload-list__item-preview"-->
+<!--              @click="handlePictureCardPreview(file)"-->
+<!--          >-->
+<!--            <el-icon><zoom-in /></el-icon>-->
+<!--          </span>-->
+<!--          <span-->
+<!--              v-if="!disabled"-->
+<!--              class="el-upload-list__item-delete"-->
+<!--              @click="handleDownload(file)"-->
+<!--          >-->
+<!--            <el-icon><Download /></el-icon>-->
+<!--          </span>-->
+<!--          <span-->
+<!--              v-if="!disabled"-->
+<!--              class="el-upload-list__item-delete"-->
+<!--              @click="handleRemove(file)"-->
+<!--          >-->
+<!--            <el-icon><Delete /></el-icon>-->
+<!--          </span>-->
+<!--        </span>-->
+<!--            </div>-->
+<!--          </template>-->
+<!--        </el-upload>-->
+
+<!--        <el-dialog v-model="dialogVisible">-->
+<!--          <img w-full :src="dialogImageUrl" alt="Preview Image" />-->
+<!--        </el-dialog>-->
+<!--      </div>-->
+
       <div class="little-box">
         <div style="width: 40px">图片</div>
-        <el-input v-model="tempInfo.arr.name" placeholder="图片"/>
+        <el-input v-model="goods.Img" placeholder="图片"/>
       </div>
+
+      <div class="little-box">
+        <div style="width: 40px">商品名</div>
+        <el-input v-model="goods.Name" placeholder="商品名"/>
+      </div>
+
       <div class="little-box">
         <div style="width: 40px">品牌</div>
-        <el-input v-model="tempInfo.arr.phonenumber" placeholder="品牌"/>
+        <el-input v-model="goods.Brand" placeholder="品牌"/>
       </div>
       <div class="little-box">
         <div style="width: 40px">分类</div>
-        <el-select v-model="tempInfo.arr.Sex" class="m-2" placeholder="分类" size="large">
+        <el-select v-model="goods.Category" class="m-2" placeholder="分类" size="large">
           <el-option
               v-for="item in options"
               :key="item.value"
@@ -47,26 +88,22 @@
       </div>
       <div class="little-box">
         <div style="width: 40px">市场价</div>
-        <el-input v-model="input" placeholder="市场价"/>
+        <el-input v-model="goods.MarketPrice" placeholder="市场价"/>
       </div>
       <div class="little-box">
         <div style="width: 40px">网红价</div>
-        <el-input v-model="input" placeholder="网红价"/>
+        <el-input v-model="goods.CelebrityPrice" placeholder="网红价"/>
       </div>
       <div class="little-box">
         <div style="width: 40px">商品简介</div>
-        <el-input v-model="input" placeholder="商品简介"/>
+        <el-input v-model="goods.Intro" placeholder="商品简介"/>
       </div>
       <div class="little-box">
         <div style="width: 40px">平台地址</div>
-        <el-input v-model="tempInfo.arr.PlatformUrl" placeholder="平台地址"/>
-      </div>
-      <div class="little-box">
-        <div style="width: 40px">个人简介</div>
-        <el-input v-model="tempInfo.arr.Intro" placeholder="个人简介"/>
+        <el-input v-model="goods.GoodUrl" placeholder="平台地址"/>
       </div>
       <el-button @click="centerDialogVisible=false">关闭</el-button>
-      <el-button @click="updateInfo()">添加</el-button>
+      <el-button @click="updateProduct()">添加</el-button>
     </div>
 
   </div>
@@ -75,12 +112,26 @@
 
 <script setup>
 import {reactive, ref} from "vue";
+import ERequest from "@/request/ERequest";
 
 let centerDialogVisible = ref(false)
 
-let tempInfo = reactive({
-  arr: []
+let goods = reactive({
+  Img:'',
+  Name:'',
+  Brand:0,
+  Category:'',
+  MarketPrice:0,
+  CelebrityPrice:0,
+  Intro:'',
+  GoodUrl:'',
 })
+
+const updateProduct=()=>{
+ ERequest.post('/saveGood',JSON.stringify(goods)).then((res)=>{
+   console.log(res)
+ })
+}
 
 const options = [
   {
