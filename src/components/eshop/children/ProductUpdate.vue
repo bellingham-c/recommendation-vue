@@ -1,20 +1,20 @@
 <template>
   <div class="main-box">
-    <el-button @click="centerDialogVisible=true">添加商品</el-button>
+    <el-button @click="centerDialogVisible=true" type="primary">添加商品</el-button>
+    <!--    分割线-->
+    <div class="line_01">所有商品</div>
     <!--        商品展示区-->
-    <el-table :data="tableData" style="width: 100vw">
-      <el-table-column fixed prop="date" label="商品信息" width="470"/>
-      <el-table-column prop="name" label="品牌" width="120"/>
-      <el-table-column prop="state" label="市场价" width="120"/>
-      <el-table-column prop="city" label="网红价" width="120"/>
-      <el-table-column prop="address" label="商品代理数" width="400"/>
+    <el-table :data="tableData.arr" style="width: 100vw">
+      <el-table-column fixed prop="Intro" label="商品信息" width="470"/>
+      <el-table-column prop="Brand" label="品牌" width="120"/>
+      <el-table-column prop="MarketPrice" label="市场价" width="120"/>
+      <el-table-column prop="CelebrityPrice" label="网红价" width="120"/>
+      <el-table-column prop="GoodUrl" label="店铺地址" width="400"/>
       <el-table-column fixed="right" label="Operations" width="450">
-        <template #default>
-          <el-button link type="primary" size="small" @click="handleClick"
-          >Detail
-          </el-button
-          >
-          <el-button link type="primary" size="small">Edit</el-button>
+        <template v-slot="scope">
+          <el-button link type="primary" size="small" @click="detail(scope.row)">详细信息</el-button>
+          <el-button v-if="scope.row.Status===1" link type="danger" size="small" @click="change(0,scope.row)">禁用</el-button>
+          <el-button v-if="scope.row.Status===0" link type="primary" size="small" @click="change(1,scope.row)">启用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -22,44 +22,44 @@
   <!--  添加弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
-<!--      <div class="little-box">-->
-<!--        <div style="width: 40px">图片</div>-->
-<!--        <el-upload action="#" list-type="picture-card" :auto-upload="false">-->
-<!--          <el-icon><Plus /></el-icon>-->
+      <!--      <div class="little-box">-->
+      <!--        <div style="width: 40px">图片</div>-->
+      <!--        <el-upload action="#" list-type="picture-card" :auto-upload="false">-->
+      <!--          <el-icon><Plus /></el-icon>-->
 
-<!--          <template #file="{ file }">-->
-<!--            <div>-->
-<!--              <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />-->
-<!--              <span class="el-upload-list__item-actions">-->
-<!--          <span-->
-<!--              class="el-upload-list__item-preview"-->
-<!--              @click="handlePictureCardPreview(file)"-->
-<!--          >-->
-<!--            <el-icon><zoom-in /></el-icon>-->
-<!--          </span>-->
-<!--          <span-->
-<!--              v-if="!disabled"-->
-<!--              class="el-upload-list__item-delete"-->
-<!--              @click="handleDownload(file)"-->
-<!--          >-->
-<!--            <el-icon><Download /></el-icon>-->
-<!--          </span>-->
-<!--          <span-->
-<!--              v-if="!disabled"-->
-<!--              class="el-upload-list__item-delete"-->
-<!--              @click="handleRemove(file)"-->
-<!--          >-->
-<!--            <el-icon><Delete /></el-icon>-->
-<!--          </span>-->
-<!--        </span>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </el-upload>-->
+      <!--          <template #file="{ file }">-->
+      <!--            <div>-->
+      <!--              <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />-->
+      <!--              <span class="el-upload-list__item-actions">-->
+      <!--          <span-->
+      <!--              class="el-upload-list__item-preview"-->
+      <!--              @click="handlePictureCardPreview(file)"-->
+      <!--          >-->
+      <!--            <el-icon><zoom-in /></el-icon>-->
+      <!--          </span>-->
+      <!--          <span-->
+      <!--              v-if="!disabled"-->
+      <!--              class="el-upload-list__item-delete"-->
+      <!--              @click="handleDownload(file)"-->
+      <!--          >-->
+      <!--            <el-icon><Download /></el-icon>-->
+      <!--          </span>-->
+      <!--          <span-->
+      <!--              v-if="!disabled"-->
+      <!--              class="el-upload-list__item-delete"-->
+      <!--              @click="handleRemove(file)"-->
+      <!--          >-->
+      <!--            <el-icon><Delete /></el-icon>-->
+      <!--          </span>-->
+      <!--        </span>-->
+      <!--            </div>-->
+      <!--          </template>-->
+      <!--        </el-upload>-->
 
-<!--        <el-dialog v-model="dialogVisible">-->
-<!--          <img w-full :src="dialogImageUrl" alt="Preview Image" />-->
-<!--        </el-dialog>-->
-<!--      </div>-->
+      <!--        <el-dialog v-model="dialogVisible">-->
+      <!--          <img w-full :src="dialogImageUrl" alt="Preview Image" />-->
+      <!--        </el-dialog>-->
+      <!--      </div>-->
 
       <div class="little-box">
         <div style="width: 40px">图片</div>
@@ -105,32 +105,52 @@
       <el-button @click="centerDialogVisible=false">关闭</el-button>
       <el-button @click="updateProduct()">添加</el-button>
     </div>
-
   </div>
 
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import ERequest from "@/request/ERequest";
 
 let centerDialogVisible = ref(false)
 
-let goods = reactive({
-  Img:'',
-  Name:'',
-  Brand:0,
-  Category:'',
-  MarketPrice:0,
-  CelebrityPrice:0,
-  Intro:'',
-  GoodUrl:'',
+let goods = ref({
+  Img: '',
+  Name: '',
+  Brand: 0,
+  Category: '',
+  MarketPrice: 0,
+  CelebrityPrice: 0,
+  Intro: '',
+  GoodUrl: '',
 })
 
-const updateProduct=()=>{
- ERequest.post('/saveGood',JSON.stringify(goods)).then((res)=>{
-   console.log(res)
- })
+const change = (status, info) => {
+  const params = new URLSearchParams()
+  params.append("status", status)
+  params.append("id", info.Id)
+  ERequest.post('/status', params).then((res) => {
+    console.log(res)
+  })
+}
+
+const detail = (data) => {
+  centerDialogVisible.value = true
+  goods.value = data
+}
+
+//获取全部商品信息
+onMounted(() => {
+  ERequest.get('/getAllGoods').then((res) => {
+    tableData.arr = res.data.data.data
+  })
+})
+
+const updateProduct = () => {
+  ERequest.post('/saveGood', goods.value).then((res) => {
+    console.log(res)
+  })
 }
 
 const options = [
@@ -203,47 +223,22 @@ const options = [
   },
 ]
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
-]
+const tableData = reactive({
+  arr: []
+})
 </script>
 
 <style scoped>
+.line_01 {
+  padding: 0 20px 0;
+  margin: 20px 0;
+  line-height: 1px;
+  border-left: 190px solid #ddd;
+  border-right: 190px solid #ddd;
+  text-align: center;
+  color: #79bbff;
+}
+
 .little-box {
   padding: 10px;
   margin: 3px;
@@ -272,6 +267,7 @@ const tableData = [
 }
 
 .main-box {
+  margin-top: 5px;
   z-index: 1;
   width: 100%;
 }

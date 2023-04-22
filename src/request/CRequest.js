@@ -1,8 +1,20 @@
 import axios from 'axios'
-
+import JSONbig from "json-bigint";
 
 export const CRequest = axios.create({
-    baseURL: 'http://localhost:1016/celebrity'
+    baseURL: 'http://localhost:1016/celebrity',
+    transformResponse: [function (data) {
+        //data 原始后台返回的json字符串数据
+        //这里的方法，会覆盖axios默认对于返回结果的处理，默认进行的是JSON.parse
+        //需要进行的是JSONbig.parse
+        //后台返回的可能不是json，jsonbig处理不了，所以在这里需要对错误进行处理
+        try {
+            return JSONbig.parse(data)
+        } catch (err) {
+            //如果解析不了，说明不是json数据，原样返回
+            return <data></data>
+        }
+    }]
 })
 
 CRequest.interceptors.request.use(function (config) {
