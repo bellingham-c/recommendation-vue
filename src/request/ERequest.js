@@ -12,7 +12,7 @@ export const ERequest = axios.create({
             return JSONbig.parse(data)
         } catch (err) {
             //如果解析不了，说明不是json数据，原样返回
-            return <data></data>
+            return data
         }
     }]
 })
@@ -21,6 +21,7 @@ ERequest.interceptors.request.use(function (config) {
     if (localStorage.getItem('token')) {
         config.headers = {
             'Authorization': 'Bearer' + localStorage.getItem('token'), //携带权限参数
+            'Content-Type': 'multipart/form-data',
         };
     }
     return config

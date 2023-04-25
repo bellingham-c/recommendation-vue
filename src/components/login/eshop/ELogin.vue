@@ -25,10 +25,7 @@ const form = reactive({
 })
 
 const login = () => {
-  const params = new URLSearchParams()
-  params.append("username", form.account)
-  params.append("password", form.password)
-  ERequest.post('/login', params).then((res) => {
+  ERequest.post('/login', form).then((res) => {
     if (res.data.code === 200) {
       router.push('/eshop')
       localStorage.setItem('token', res.data.data.token)

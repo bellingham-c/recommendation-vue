@@ -25,10 +25,7 @@ const form = reactive({
 })
 
 const login = () => {
-  const params = new URLSearchParams()
-  params.append("username", form.account)
-  params.append("password", form.password)
-  CRequest.post('/login', params).then((res) => {
+  CRequest.post('/login', form).then((res) => {
     if (res.data.code === 200) {
       router.push('/celebrity')
       localStorage.setItem('token', res.data.data.token)

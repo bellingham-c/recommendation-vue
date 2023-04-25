@@ -8,7 +8,7 @@
         <div>电话:{{ user.phonenumber }}</div>
         <div>常驻平台:{{ user.Platform }}</div>
         <div>
-          <button @click="test(user)">查看详情</button>
+          <button @click="detail(user)">查看详情</button>
           <button>合作</button>
         </div>
       </div>
@@ -18,7 +18,7 @@
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
-        <img src="@/assets/img/regBack.jpg" style="width: 50px;height: 50px">
+      <img src="@/assets/img/regBack.jpg" style="width: 50px;height: 50px">
       <div class="little-box">
         <div style="width: 40px">账号</div>
         <el-input v-model="tempInfo.arr.username" disabled placeholder="账号"/>
@@ -84,7 +84,7 @@ let tempInfo = reactive({
   arr: []
 })
 
-const test = (user) => {
+const detail = (user) => {
   tempInfo.arr = user
   centerDialogVisible.value = true
 }
