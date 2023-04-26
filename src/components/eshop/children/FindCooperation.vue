@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="card_wrap" v-for="user in user.arr" :key="user">
       <div class="card_item">
-        <img class="card_content_img" src="@/assets/img/regBack.jpg">
+        <img class="card_content_img" :src="user.Avatar">
         <div>名字:{{ user.name }}</div>
         <div>年龄:{{ user.Age }}</div>
         <div>电话:{{ user.phonenumber }}</div>

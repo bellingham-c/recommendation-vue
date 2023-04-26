@@ -1,8 +1,8 @@
 <template>
   <div class="left-box">
     <div class="block">
-      <el-avatar :size="300" :src="circleUrl" class="header"/>
-      <el-button style="display:block;margin:0 auto;">修改头像</el-button>
+      <el-avatar :size="300" :src="info.arr.Avatar" class="header"/>
+      <el-button style="display:block;margin:0 auto;" @click="imgFlag=true">修改头像</el-button>
     </div>
   </div>
   <div class="right-box">
@@ -97,18 +97,30 @@
     </div>
   </div>
 
+  <!--  修改头像-->
+  <div class="mask" v-show="imgFlag===true">
+    <div class="box">
+      <input type="file" accept="image/*" @change="change">
+      <br>
+      <div class="btn">
+        <el-button type="danger" @click="imgFlag=false">取消</el-button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import {onBeforeMount, reactive, ref,} from "vue";
 import ERequest from "@/request/ERequest";
+import router from "@/router";
 
 let centerDialogVisible = ref(false)
+
+let imgFlag = ref(false)
 
 let info = reactive({
   arr: []
 })
-
 
 let goods = ref({
   Username: "",
@@ -121,9 +133,21 @@ let goods = ref({
   Intro: ""
 })
 
-const change = () => {
-  centerDialogVisible.value = true
-  goods.value = info.arr
+const change=(e)=>{
+  let formData=new FormData()
+  formData.append("file",e.target.files[0])
+  formData.append("tel",info.arr.Phonenumber)
+  formData.append("username",info.arr.Username)
+  ERequest.post('/upload',formData).then((res)=>{
+    if (res.data.data.url!==null){
+      imgFlag=false
+      alert("修改成功")
+      router.go('/eshop/myself')
+    }else{
+      imgFlag=false
+      alert("修改失败")
+    }
+  })
 }
 
 const updateInfo = () => {
@@ -144,6 +168,12 @@ onBeforeMount((() => {
 </script>
 
 <style scoped>
+.btn{
+  padding: 15px;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
 .little-box {
   padding: 10px;
   margin: 3px;

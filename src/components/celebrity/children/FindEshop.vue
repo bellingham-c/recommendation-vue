@@ -2,14 +2,14 @@
   <div class="wrap">
     <div class="card_wrap" v-for="user in user.arr" :key="user">
       <div class="card_item">
-        <img class="card_content_img" src="@/assets/img/regBack.jpg">
-        <div>名字:{{ user.name }}</div>
+        <img class="card_content_img" :src="user.Avatar">
+        <div>名字:{{ user.Name }}</div>
         <div>年龄:{{ user.Age }}</div>
-        <div>电话:{{ user.phonenumber }}</div>
+        <div>电话:{{ user.Phonenumber }}</div>
         <div>常驻平台:{{ user.Platform }}</div>
         <div>
-          <button @click="detail(user)">查看详情</button>
-          <button>合作</button>
+          <el-button type="success" @click="detail(user)">查看详情</el-button>
+          <el-button>合作</el-button>
         </div>
       </div>
     </div>
@@ -18,52 +18,40 @@
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
-      <img src="@/assets/img/regBack.jpg" style="width: 50px;height: 50px">
-      <div class="little-box">
-        <div style="width: 40px">账号</div>
-        <el-input v-model="tempInfo.arr.username" disabled placeholder="账号"/>
-      </div>
       <div class="little-box">
         <div style="width: 40px">昵称</div>
-        <el-input v-model="tempInfo.arr.name" placeholder="昵称"/>
+        <span>{{ tempInfo.arr.Name }}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">电话</div>
-        <el-input v-model="tempInfo.arr.phonenumber" placeholder="电话"/>
+        <span>{{tempInfo.arr.Phonenumber}}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">住址</div>
-        <el-input v-model="input" placeholder="住址"/>
+        <span>null</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">性别</div>
-        <el-select v-model="tempInfo.arr.Sex" class="m-2" placeholder="性别" size="large">
-          <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          />
-        </el-select>
+        <span>{{tempInfo.arr.Sex}}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">年龄</div>
-        <el-input v-model="tempInfo.arr.Age" placeholder="年龄"/>
+        <span>{{tempInfo.arr.Age}}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">常驻平台</div>
-        <el-input v-model="tempInfo.arr.Platform" placeholder="常驻平台"/>
+        <span>{{tempInfo.arr.Platform}}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">平台地址</div>
-        <el-input v-model="tempInfo.arr.PlatformUrl" placeholder="平台地址"/>
+        <span>{{tempInfo.arr.PlatformUrl}}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">个人简介</div>
-        <el-input v-model="tempInfo.arr.Intro" placeholder="个人简介"/>
+        <span>{{tempInfo.arr.Intro}}</span>
       </div>
-      <el-button @click="centerDialogVisible=false">关闭</el-button>
-      <el-button @click="updateInfo()">修改</el-button>
+      <el-button type="danger" @click="centerDialogVisible=false">关闭</el-button>
+      <el-button type="primary">合作</el-button>
     </div>
 
   </div>
@@ -98,11 +86,17 @@ onBeforeMount(() => {
 </script>
 
 <style scoped>
+span {
+  padding: 10px;
+  font-size: 15px;
+}
+
 .little-box {
   padding: 10px;
   margin: 3px;
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid black;
 }
 
 .box {
