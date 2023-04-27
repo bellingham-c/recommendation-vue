@@ -3,6 +3,20 @@
     <div class="block">
       <el-avatar :size="300" :src="info.arr.Avatar" class="header"/>
       <el-button type="primary" style="display:block;margin:0 auto;" @click="imgFlag=true">修改头像</el-button>
+      <div class="credit">
+        <div class="reputation">
+          信誉积分
+          <div v-show="level==='0'">
+            <span class="reputation-level-1">{{ info.arr.CreditPoint }}</span>
+          </div>
+          <div v-show="level==='1'">
+            <span class="reputation-level-2">{{ info.arr.CreditPoint }}</span>
+          </div>
+          <div v-show="level==='2'">
+            <span class="reputation-level-3">{{ info.arr.CreditPoint }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="right-box">
@@ -25,33 +39,19 @@
     <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="centerDialogVisible=true">修改个人信息
     </el-button>
     <el-descriptions
-        title="信誉积分"
+        title="我的订单"
         :column="4"
         direction="vertical"
     >
     </el-descriptions>
-    <el-row>
-      <el-col
-          v-for="(o, index) in 2"
-          :key="o"
-          :span="8"
-          :offset="index > 0 ? 2 : 0"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              class="image"
-          />
-          <div style="padding: 14px">
-            <span>Yummy hamburger</span>
-            <div class="bottom">
-              <time class="time">{{ currentDate }}</time>
-              <el-button text class="button" @click="test()">Operating</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <!--    订单展示-->
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="Id" label="合约编号" width="180"/>
+      <el-table-column prop="Eshop" label="合作对象" width="180"/>
+      <el-table-column prop="StartTime" label="开始时间" width="180"/>
+      <el-table-column prop="EndTime" label="结束时间" width="180"/>
+      <el-table-column prop="Status" label="状态" width="180"/>
+    </el-table>
   </div>
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
@@ -120,8 +120,9 @@
 <script setup>
 
 import CRequest from "@/request/CRequest"
-import {onBeforeMount, reactive, ref,} from "vue"
+import {computed, onBeforeMount, reactive, ref,} from "vue"
 import router from "@/router";
+
 
 let centerDialogVisible = ref(false)
 
@@ -130,6 +131,8 @@ let imgFlag = ref(false)
 let info = reactive({
   arr: []
 })
+
+let tableData = ref([])
 
 const options = [
   {
@@ -146,42 +149,85 @@ const options = [
   }
 ]
 
+const level = computed(() => {
+  if (info.arr.CreditPoint >= 90) {
+    return '0'
+  } else if (info.arr.CreditPoint < 90 && info.arr.CreditPoint > 80) {
+    return '1'
+  } else {
+    return '2'
+  }
+})
+
 const updateInfo = () => {
   CRequest.post('/updateInfo', info.arr).then((res) => {
     console.log(res)
   })
 }
 
-const change=(e)=>{
-  let formData=new FormData()
-  formData.append("file",e.target.files[0])
-  formData.append("tel",info.arr.phonenumber)
-  formData.append("username",info.arr.username)
-  CRequest.post('/upload',formData).then((res)=>{
-    if (res.data.data.url!==null){
-      imgFlag=false
+const change = (e) => {
+  let formData = new FormData()
+  formData.append("file", e.target.files[0])
+  formData.append("tel", info.arr.phonenumber)
+  formData.append("username", info.arr.username)
+  CRequest.post('/upload', formData).then((res) => {
+    if (res.data.data.url !== null) {
+      imgFlag = false
       alert("修改成功")
       router.go('/celebrity/myself')
-    }else{
-      imgFlag=false
+    } else {
+      imgFlag = false
       alert("修改失败")
     }
   })
-}
-
-const test = () => {
-
 }
 
 onBeforeMount((() => {
   CRequest.get('/find').then((res) => {
     info.arr = res.data.data.data
   })
+  CRequest.get('/getContract').then((res1) => {
+    tableData.value = res1.data.data.data
+    console.log(tableData)
+  })
 }))
+
 </script>
 
 <style scoped>
-.btn{
+.credit {
+  display: block;
+  margin: 10px auto;
+}
+
+.reputation {
+  display: block;
+  padding: 10px;
+  margin: 5px auto;
+  font-size: 24px;
+  font-weight: bold;
+  color: #4d4d4d;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  line-height: 60px;
+  text-align: center;
+}
+
+.reputation-level-1 {
+  color: #0dde0d;
+}
+
+.reputation-level-2 {
+  color: #ef7005;
+}
+
+.reputation-level-3 {
+  color: red;
+}
+
+.btn {
   padding: 15px;
   display: block;
   margin: 0 auto;
@@ -225,7 +271,9 @@ onBeforeMount((() => {
 }
 
 .header {
-  margin: 10px 10% 20px 15%;
+  display: block;
+  margin: 5px auto;
+  padding: 5px;
 }
 
 .left-box {

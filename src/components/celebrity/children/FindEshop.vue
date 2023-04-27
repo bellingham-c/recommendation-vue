@@ -9,7 +9,6 @@
         <div>常驻平台:{{ user.Platform }}</div>
         <div>
           <el-button type="success" @click="detail(user)">查看详情</el-button>
-          <el-button>合作</el-button>
         </div>
       </div>
     </div>
@@ -24,7 +23,7 @@
       </div>
       <div class="little-box">
         <div style="width: 40px">电话</div>
-        <span>{{tempInfo.arr.Phonenumber}}</span>
+        <span>{{ tempInfo.arr.Phonenumber }}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">住址</div>
@@ -32,26 +31,26 @@
       </div>
       <div class="little-box">
         <div style="width: 40px">性别</div>
-        <span>{{tempInfo.arr.Sex}}</span>
+        <span>{{ tempInfo.arr.Sex }}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">年龄</div>
-        <span>{{tempInfo.arr.Age}}</span>
+        <span>{{ tempInfo.arr.Age }}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">常驻平台</div>
-        <span>{{tempInfo.arr.Platform}}</span>
+        <span>{{ tempInfo.arr.Platform }}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">平台地址</div>
-        <span>{{tempInfo.arr.PlatformUrl}}</span>
+        <span>{{ tempInfo.arr.PlatformUrl }}</span>
       </div>
       <div class="little-box">
         <div style="width: 40px">个人简介</div>
-        <span>{{tempInfo.arr.Intro}}</span>
+        <span>{{ tempInfo.arr.Intro }}</span>
       </div>
       <el-button type="danger" @click="centerDialogVisible=false">关闭</el-button>
-      <el-button type="primary">合作</el-button>
+      <el-button type="primary" @click="cooperate(tempInfo.arr.Name)">合作</el-button>
     </div>
 
   </div>
@@ -61,6 +60,7 @@
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
 import CRequest from "@/request/CRequest";
+import {ElMessage} from "element-plus";
 
 let centerDialogVisible = ref(false)
 
@@ -71,6 +71,30 @@ let user = reactive({
 let tempInfo = reactive({
   arr: []
 })
+
+const cooperate = (name) => {
+  let formData=new FormData()
+  formData.append("Eshop  ",tempInfo.arr.Id)
+  const r = confirm("你确定要与" + name + "合作吗?")
+  if (r === true) {
+    console.log(formData.Id)
+    CRequest.post('/save',formData).then((res)=>{
+      console.log(res)
+    })
+    centerDialogVisible.value = false
+    Success()
+  } else {
+    console.log("shibai")
+  }
+}
+
+const Success = () => {
+  ElMessage({
+    showClose: true,
+    message: '已成功发送合作请求',
+    type: 'success',
+  })
+}
 
 const detail = (user) => {
   tempInfo.arr = user
