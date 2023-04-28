@@ -1,6 +1,6 @@
 <template>
   <div class="main-box">
-    <el-button @click="centerDialogVisible=true" type="primary">添加商品</el-button>
+    <el-button @click="addGood()" type="primary">添加商品</el-button>
     <!--    分割线-->
     <div class="line_01">所有商品</div>
     <!--        商品展示区-->
@@ -12,60 +12,21 @@
       <el-table-column prop="GoodUrl" label="店铺地址" width="400"/>
       <el-table-column fixed="right" label="Operations" width="450">
         <template v-slot="scope">
+          <el-button link type="primary" size="small" @click="upload(scope.row)">上传图片</el-button>
           <el-button link type="primary" size="small" @click="detail(scope.row)">详细信息</el-button>
-          <el-button v-if="scope.row.Status===1" link type="danger" size="small" @click="change(0,scope.row)">禁用</el-button>
-          <el-button v-if="scope.row.Status===0" link type="primary" size="small" @click="change(1,scope.row)">启用</el-button>
+          <el-button v-if="scope.row.Status===1" link type="danger" size="small" @click="change(0,scope.row)">禁用
+          </el-button>
+          <el-button v-if="scope.row.Status===0" link type="primary" size="small" @click="change(1,scope.row)">启用
+          </el-button>
+          <el-button link type="danger" size="small" @click="drop(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
-  <!--  添加弹窗-->
+  <!--  详细信息弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
-      <!--      <div class="little-box">-->
-      <!--        <div style="width: 40px">图片</div>-->
-      <!--        <el-upload action="#" list-type="picture-card" :auto-upload="false">-->
-      <!--          <el-icon><Plus /></el-icon>-->
-
-      <!--          <template #file="{ file }">-->
-      <!--            <div>-->
-      <!--              <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />-->
-      <!--              <span class="el-upload-list__item-actions">-->
-      <!--          <span-->
-      <!--              class="el-upload-list__item-preview"-->
-      <!--              @click="handlePictureCardPreview(file)"-->
-      <!--          >-->
-      <!--            <el-icon><zoom-in /></el-icon>-->
-      <!--          </span>-->
-      <!--          <span-->
-      <!--              v-if="!disabled"-->
-      <!--              class="el-upload-list__item-delete"-->
-      <!--              @click="handleDownload(file)"-->
-      <!--          >-->
-      <!--            <el-icon><Download /></el-icon>-->
-      <!--          </span>-->
-      <!--          <span-->
-      <!--              v-if="!disabled"-->
-      <!--              class="el-upload-list__item-delete"-->
-      <!--              @click="handleRemove(file)"-->
-      <!--          >-->
-      <!--            <el-icon><Delete /></el-icon>-->
-      <!--          </span>-->
-      <!--        </span>-->
-      <!--            </div>-->
-      <!--          </template>-->
-      <!--        </el-upload>-->
-
-      <!--        <el-dialog v-model="dialogVisible">-->
-      <!--          <img w-full :src="dialogImageUrl" alt="Preview Image" />-->
-      <!--        </el-dialog>-->
-      <!--      </div>-->
-
-      <div class="little-box">
-        <div style="width: 40px">图片</div>
-        <el-input v-model="goods.Img" placeholder="图片"/>
-      </div>
-
+      <img :src="goods.Img" style="width: 50px;height: 50px" alt="">
       <div class="little-box">
         <div style="width: 40px">商品名</div>
         <el-input v-model="goods.Name" placeholder="商品名"/>
@@ -103,17 +64,75 @@
         <el-input v-model="goods.GoodUrl" placeholder="平台地址"/>
       </div>
       <el-button @click="centerDialogVisible=false">关闭</el-button>
-      <el-button @click="updateProduct()">添加</el-button>
+      <el-button @click="updateProduct()">修改</el-button>
     </div>
   </div>
 
+  <!--  添加弹窗-->
+  <div class="mask" v-if="saveVisible">
+    <div class="box">
+      <div class="little-box">
+        <div style="width: 40px">商品名</div>
+        <el-input v-model="showGoods.Name" placeholder="商品名"/>
+      </div>
+
+      <div class="little-box">
+        <div style="width: 40px">品牌</div>
+        <el-input v-model="showGoods.Brand" placeholder="品牌"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">分类</div>
+        <el-select v-model="showGoods.Category" class="m-2" placeholder="分类" size="large">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">市场价</div>
+        <el-input v-model="showGoods.MarketPrice" placeholder="市场价"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">网红价</div>
+        <el-input v-model="showGoods.CelebrityPrice" placeholder="网红价"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">商品简介</div>
+        <el-input v-model="showGoods.Intro" placeholder="商品简介"/>
+      </div>
+      <div class="little-box">
+        <div style="width: 40px">平台地址</div>
+        <el-input v-model="showGoods.GoodUrl" placeholder="平台地址"/>
+      </div>
+      <el-button @click="saveVisible=false">关闭</el-button>
+      <el-button @click="saveProduct()">添加</el-button>
+    </div>
+  </div>
+
+  <!--  修改头像-->
+  <div class="mask" v-show="imgFlag===true">
+    <div class="box">
+      <input type="file" accept="image/*" @change="changes">
+      <br>
+      <div class="btn">
+        <el-button type="danger" @click="imgFlag=false">取消</el-button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import ERequest from "@/request/ERequest";
+import router from "@/router";
 
 let centerDialogVisible = ref(false)
+let saveVisible = ref(false)
+
+let imgFlag = ref(false)
 
 let goods = ref({
   Img: '',
@@ -126,8 +145,56 @@ let goods = ref({
   GoodUrl: '',
 })
 
+let showGoods = ref({
+  Img: '',
+  Name: '',
+  Brand: 0,
+  Category: '',
+  MarketPrice: 0,
+  CelebrityPrice: 0,
+  Intro: '',
+  GoodUrl: '',
+})
+
+const drop = (info) => {
+  const data = new FormData()
+  data.append("id", info.Id)
+  ERequest.post("/delete", data).then((res) => {
+    if (res.data.data.code === 200) {
+      alert("删除成功")
+    } else {
+      alert("删除失败")
+    }
+  })
+}
+
+const addGood = () => {
+  saveVisible.value = true
+}
+
+const upload = (info) => {
+  localStorage.setItem("id", info.Id)
+  imgFlag.value = true
+}
+
+const changes = (e) => {
+  let formData = new FormData()
+  formData.append("file", e.target.files[0])
+  formData.append("id", localStorage.getItem("id"))
+  ERequest.post('/uploadGood', formData).then((res) => {
+    if (res.data.data.url !== null) {
+      imgFlag = false
+      alert("修改成功")
+      router.go('/eshop/product')
+    } else {
+      imgFlag = false
+      alert("修改失败")
+    }
+  })
+}
+
 const change = (status, info) => {
-  const params = new URLSearchParams()
+  const params = new FormData()
   params.append("status", status)
   params.append("id", info.Id)
   ERequest.post('/status', params).then((res) => {
@@ -147,9 +214,29 @@ onMounted(() => {
   })
 })
 
+const saveProduct = () => {
+  ERequest.post('/saveGood', showGoods.value).then((res) => {
+    console.log("res=", res)
+    if (res.data.code === 200) {
+      saveVisible = false
+      alert("添加成功")
+      router.go('/eshop/product')
+    } else {
+      alert("添加失败")
+    }
+  })
+}
+
 const updateProduct = () => {
   ERequest.post('/saveGood', goods.value).then((res) => {
-    console.log(res)
+    console.log("res=", res)
+    if (res.data.code === 200) {
+      saveVisible = false
+      alert("添加成功")
+      router.go('/eshop/product')
+    } else {
+      alert("添加失败")
+    }
   })
 }
 

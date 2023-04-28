@@ -123,7 +123,6 @@ import CRequest from "@/request/CRequest"
 import {computed, onBeforeMount, reactive, ref,} from "vue"
 import router from "@/router";
 
-
 let centerDialogVisible = ref(false)
 
 let imgFlag = ref(false)
