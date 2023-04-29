@@ -38,20 +38,6 @@
     </el-descriptions>
     <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="centerDialogVisible=true">修改个人信息
     </el-button>
-    <el-descriptions
-        title="我的订单"
-        :column="4"
-        direction="vertical"
-    >
-    </el-descriptions>
-    <!--    订单展示-->
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="Id" label="合约编号" width="180"/>
-      <el-table-column prop="Eshop" label="合作对象" width="180"/>
-      <el-table-column prop="StartTime" label="开始时间" width="180"/>
-      <el-table-column prop="EndTime" label="结束时间" width="180"/>
-      <el-table-column prop="Status" label="状态" width="180"/>
-    </el-table>
   </div>
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
@@ -187,7 +173,6 @@ onBeforeMount((() => {
   })
   CRequest.get('/getContract').then((res1) => {
     tableData.value = res1.data.data.data
-    console.log(tableData)
   })
 }))
 
@@ -244,7 +229,7 @@ onBeforeMount((() => {
   background: #fff;
   padding: 40px;
   border-radius: 8px;
-  width: 200px;
+  width: 30%;
 }
 
 .mask {

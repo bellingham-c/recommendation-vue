@@ -21,36 +21,8 @@
       <el-descriptions-item label="个人简介">{{ info.arr.Intro }}
       </el-descriptions-item>
     </el-descriptions>
-    <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="change()">修改个人信息
+    <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="update()">修改个人信息
     </el-button>
-    <el-descriptions
-        title="信誉积分"
-        :column="4"
-        direction="vertical"
-    >
-    </el-descriptions>
-    <el-row>
-      <el-col
-          v-for="(o, index) in 2"
-          :key="o"
-          :span="8"
-          :offset="index > 0 ? 2 : 0"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <img
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              class="image"
-          />
-          <div style="padding: 14px">
-            <span>Yummy hamburger</span>
-            <div class="bottom">
-              <time class="time">{{ currentDate }}</time>
-              <el-button text class="button" @click="test()">Operating</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
   </div>
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
@@ -118,6 +90,7 @@ let centerDialogVisible = ref(false)
 
 let imgFlag = ref(false)
 
+
 let info = reactive({
   arr: []
 })
@@ -132,6 +105,11 @@ let goods = ref({
   PlatformUrl: "",
   Intro: ""
 })
+
+const update=()=>{
+  centerDialogVisible.value=true
+  goods.value=info.arr
+}
 
 const change=(e)=>{
   let formData=new FormData()
@@ -152,12 +130,8 @@ const change=(e)=>{
 
 const updateInfo = () => {
   ERequest.post('/update', goods.value).then((res) => {
-    console.log(res)
+    console.log("res",res)
   })
-}
-
-const test = () => {
-  console.log(info.arr.username)
 }
 
 onBeforeMount((() => {
@@ -174,6 +148,7 @@ onBeforeMount((() => {
   margin: 0 auto;
   text-align: center;
 }
+
 .little-box {
   padding: 10px;
   margin: 3px;

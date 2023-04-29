@@ -10,12 +10,12 @@
 
 <script setup>
 import {onBeforeMount, ref} from "vue";
-import ERequest from "@/request/ERequest";
+import CRequest from "@/request/CRequest";
 
 let tableData = ref([])
 
 onBeforeMount((()=>{
-  ERequest.get('/getContract').then((res1) => {
+  CRequest.get('/getContract').then((res1) => {
     tableData.value = res1.data.data.data
     console.log(tableData)
   })

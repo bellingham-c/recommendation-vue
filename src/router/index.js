@@ -14,6 +14,7 @@ import shopInfo from "@/components/eshop/children/ShopInfo.vue";
 import IndexRecommend from "@/components/eshop/children/IndexRecommend.vue";
 import myselfInfo from "@/components/eshop/shopinfo/MyselfInfo.vue";
 import myOrder from "@/components/eshop/shopinfo/MyOrder.vue";
+import CTreaty from "@/components/celebrity/children/CTreaty.vue";
 
 
 const routes = [
@@ -74,6 +75,10 @@ const routes = [
             {
                 path: 'myself',
                 component: MySelf
+            },
+            {
+                path: 'treaty',
+                component: CTreaty
             },
             {
                 path: 'find',

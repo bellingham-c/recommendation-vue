@@ -8,8 +8,7 @@
         <div>电话:{{ user.phonenumber }}</div>
         <div>常驻平台:{{ user.Platform }}</div>
         <div>
-          <button @click="detail(user)">查看详情</button>
-          <button>合作</button>
+          <el-button type="success" @click="detail(user)">查看详情</el-button>
         </div>
       </div>
     </div>
@@ -18,52 +17,40 @@
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
-      <img src="@/assets/img/regBack.jpg" style="width: 50px;height: 50px">
       <div class="little-box">
-        <div style="width: 40px">账号</div>
-        <el-input v-model="tempInfo.arr.username" disabled placeholder="账号"/>
+        <div class="blue-font">昵称</div>
+        <span>{{ tempInfo.arr.name }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">昵称</div>
-        <el-input v-model="tempInfo.arr.name" placeholder="昵称"/>
+        <div class="blue-font">电话</div>
+        <span>{{ tempInfo.arr.phonenumber }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">电话</div>
-        <el-input v-model="tempInfo.arr.phonenumber" placeholder="电话"/>
+        <div class="blue-font">住址</div>
+        <span>null</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">住址</div>
-        <el-input v-model="input" placeholder="住址"/>
+        <div class="blue-font">性别</div>
+        <span>{{ tempInfo.arr.Sex }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">性别</div>
-        <el-select v-model="tempInfo.arr.Sex" class="m-2" placeholder="性别" size="large">
-          <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          />
-        </el-select>
+        <div class="blue-font">年龄</div>
+        <span>{{ tempInfo.arr.Age }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">年龄</div>
-        <el-input v-model="tempInfo.arr.Age" placeholder="年龄"/>
+        <div class="blue-font">常驻平台</div>
+        <span>{{ tempInfo.arr.Platform }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">常驻平台</div>
-        <el-input v-model="tempInfo.arr.Platform" placeholder="常驻平台"/>
+        <div class="blue-font">平台地址</div>
+        <span>{{ tempInfo.arr.PlatformUrl }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">平台地址</div>
-        <el-input v-model="tempInfo.arr.PlatformUrl" placeholder="平台地址"/>
+        <div class="blue-font">个人简介</div>
+        <span>{{ tempInfo.arr.Intro }}</span>
       </div>
-      <div class="little-box">
-        <div style="width: 40px">个人简介</div>
-        <el-input v-model="tempInfo.arr.Intro" placeholder="个人简介"/>
-      </div>
-      <el-button @click="centerDialogVisible=false">关闭</el-button>
-      <el-button @click="updateInfo()">修改</el-button>
+      <el-button type="danger" @click="centerDialogVisible=false">关闭</el-button>
+      <el-button type="primary" @click="cooperate(tempInfo.arr.name)">合作</el-button>
     </div>
 
   </div>
@@ -86,6 +73,7 @@ let tempInfo = reactive({
 })
 
 const detail = (user) => {
+  console.log(user)
   tempInfo.arr = user
   centerDialogVisible.value = true
 }
@@ -98,11 +86,17 @@ onBeforeMount(() => {
 </script>
 
 <style scoped>
+.blue-font {
+  width: 40px;
+  color: #2cc4bf;
+}
+
 .little-box {
   padding: 10px;
   margin: 3px;
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid black;
 }
 
 .box {

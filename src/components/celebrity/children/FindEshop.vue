@@ -18,35 +18,35 @@
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
       <div class="little-box">
-        <div style="width: 40px">昵称</div>
+        <div class="blue-font">昵称</div>
         <span>{{ tempInfo.arr.Name }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">电话</div>
+        <div class="blue-font">电话</div>
         <span>{{ tempInfo.arr.Phonenumber }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">住址</div>
+        <div class="blue-font">住址</div>
         <span>null</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">性别</div>
+        <div class="blue-font">性别</div>
         <span>{{ tempInfo.arr.Sex }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">年龄</div>
+        <div class="blue-font">年龄</div>
         <span>{{ tempInfo.arr.Age }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">常驻平台</div>
+        <div class="blue-font">常驻平台</div>
         <span>{{ tempInfo.arr.Platform }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">平台地址</div>
+        <div class="blue-font">平台地址</div>
         <span>{{ tempInfo.arr.PlatformUrl }}</span>
       </div>
       <div class="little-box">
-        <div style="width: 40px">个人简介</div>
+        <div class="blue-font">个人简介</div>
         <span>{{ tempInfo.arr.Intro }}</span>
       </div>
       <el-button type="danger" @click="centerDialogVisible=false">关闭</el-button>
@@ -110,6 +110,11 @@ onBeforeMount(() => {
 </script>
 
 <style scoped>
+.blue-font {
+  width: 40px;
+  color: #2cc4bf;
+}
+
 span {
   padding: 10px;
   font-size: 15px;
