@@ -216,7 +216,6 @@ onMounted(() => {
 
 const saveProduct = () => {
   ERequest.post('/saveGood', showGoods.value).then((res) => {
-    console.log("res=", res)
     if (res.data.code === 200) {
       saveVisible = false
       alert("添加成功")
@@ -228,9 +227,8 @@ const saveProduct = () => {
 }
 
 const updateProduct = () => {
-  ERequest.post('/saveGood', goods.value).then((res) => {
-    console.log("res=", res)
-    if (res.data.code === 200) {
+  ERequest.post('/updateGood', goods.value).then((res) => {
+    if (res.status=== 200) {
       saveVisible = false
       alert("添加成功")
       router.go('/eshop/product')

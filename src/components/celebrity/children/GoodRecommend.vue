@@ -2,10 +2,10 @@
   <div class="wrap">
     <div class="card_wrap" v-for="good in goods.arr" :key="good">
       <div class="card_item">
-        <img class="card_content_img" src="@/assets/img/regBack.jpg">
-        <div>店铺:{{ good.name }}</div>
-        <div>市场价:{{ good.Age }}</div>
-        <div class="platform-font">平台价:{{ good.phonenumber }}</div>
+        <img class="card_content_img" :src="good.Img">
+        <div>店铺:{{ good.Name }}</div>
+        <div>市场价:{{ good.MarketPrice }}</div>
+        <div class="platform-font">平台价:{{ good.CelebrityPrice }}</div>
         <div>
           <button @click="test()">立即购买</button>
         </div>
@@ -27,7 +27,7 @@ const test = () => {
 }
 
 onBeforeMount(() => {
-  CRequest.get('getAllGoods').then((res) => {
+  CRequest.get('allGoods').then((res) => {
     goods.arr = res.data.data.data
   })
 })
@@ -43,28 +43,30 @@ onBeforeMount(() => {
 .wrap {
   /*这个只是让整体在页面居中展示 */
   display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
   align-items: center;
-  flex-direction: column;
   height: 100%;
-  width: 100%;
   padding: 8px;
 }
 
 .card_wrap {
   /*卡片容器 */
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
+  padding: 10px;
 }
 
 .card_item {
   /*每个卡片 */
-  /*flex-basis: 25%;*/
   margin-bottom: 16px;
   padding: 0 8px;
   width: 278px;
   height: 350px;
-  background-color: blue;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+.card_item:hover {
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.5);
 }
 
 .card_content_img {
