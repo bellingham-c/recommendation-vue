@@ -38,7 +38,14 @@
     </el-descriptions>
     <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="centerDialogVisible=true">修改个人信息
     </el-button>
+    <el-button type="success" style=" margin-top: 20px; margin-left: 20px;" @click="addressFlag=true">添加地址
+    </el-button>
+    <!--  地址信息-->
+    <div style="margin-top: 5px">
+
+    </div>
   </div>
+
   <!--  弹窗-->
   <div class="mask" v-if="centerDialogVisible">
     <div class="box">
@@ -48,15 +55,11 @@
       </div>
       <div class="little-box">
         <div style="width: 40px">昵称</div>
-        <el-input v-model="info.arrname" placeholder="昵称"/>
+        <el-input v-model="info.arr.name" placeholder="昵称"/>
       </div>
       <div class="little-box">
         <div style="width: 40px">电话</div>
         <el-input v-model="info.arr.phonenumber" placeholder="电话"/>
-      </div>
-      <div class="little-box">
-        <div style="width: 40px">住址</div>
-        <el-input v-model="input" placeholder="住址"/>
       </div>
       <div class="little-box">
         <div style="width: 40px">性别</div>
@@ -91,13 +94,39 @@
 
   </div>
 
-  <!--  修改头像-->
+  <!--  修改头像弹窗-->
   <div class="mask" v-show="imgFlag===true">
     <div class="box">
       <input type="file" accept="image/*" @change="change">
       <br>
       <div class="btn">
         <el-button type="danger" @click="imgFlag=false">取消</el-button>
+      </div>
+    </div>
+  </div>
+
+  <!--  添加地址弹窗-->
+  <div class="mask" v-show="addressFlag===true">
+    <div class="box">
+      <div class="address">
+        收货人
+        <el-input v-model="addressInfo.name" placeholder="收货人"/>
+      </div>
+      <div class="address">
+        手机号码
+        <el-input v-model="addressInfo.tel" placeholder="手机号"/>
+      </div>
+      <div class="address">
+        所在地区
+        <v-region-selects town="true" @change="regionChange"/>
+      </div>
+      <div class="address">
+        详细地址
+        <el-input v-model="addressInfo.detail" placeholder="详细地址"/>
+      </div>
+      <div class="address">
+        <el-button @click="addressFlag=false">取消</el-button>
+        <el-button type="success" @click="">添加</el-button>
       </div>
     </div>
   </div>
@@ -109,6 +138,11 @@ import CRequest from "@/request/CRequest"
 import {computed, onBeforeMount, reactive, ref,} from "vue"
 import router from "@/router";
 
+/**
+ * 变量
+ * */
+let addressFlag = ref(false)
+
 let centerDialogVisible = ref(false)
 
 let imgFlag = ref(false)
@@ -117,7 +151,13 @@ let info = reactive({
   arr: []
 })
 
-let tableData = ref([])
+const address = ref()
+
+const addressInfo=reactive({
+  name:'',
+  tel:'',
+  detail:'',
+})
 
 const options = [
   {
@@ -134,6 +174,17 @@ const options = [
   }
 ]
 
+/**
+ * 方法
+ * */
+
+const regionChange = (data) => {
+  address.value = data
+  console.log("value", address.value.province.value)
+}
+
+
+// 信誉积分等级
 const level = computed(() => {
   if (info.arr.CreditPoint >= 90) {
     return '0'
@@ -144,12 +195,17 @@ const level = computed(() => {
   }
 })
 
+// 修改个人信息
 const updateInfo = () => {
   CRequest.post('/updateInfo', info.arr).then((res) => {
-    console.log(res)
+    if (res.status === 200) {
+      alert("修改成功")
+      centerDialogVisible.value = false
+    }
   })
 }
 
+// 头像上传
 const change = (e) => {
   let formData = new FormData()
   formData.append("file", e.target.files[0])
@@ -171,14 +227,15 @@ onBeforeMount((() => {
   CRequest.get('/find').then((res) => {
     info.arr = res.data.data.data
   })
-  CRequest.get('/getContract').then((res1) => {
-    tableData.value = res1.data.data.data
-  })
 }))
 
 </script>
 
 <style scoped>
+.address{
+  margin: 5px;
+}
+
 .credit {
   display: block;
   margin: 10px auto;
