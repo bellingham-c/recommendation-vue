@@ -228,7 +228,7 @@ const saveProduct = () => {
 
 const updateProduct = () => {
   ERequest.post('/updateGood', goods.value).then((res) => {
-    if (res.status=== 200) {
+    if (res.status === 200) {
       saveVisible = false
       alert("添加成功")
       router.go('/eshop/product')

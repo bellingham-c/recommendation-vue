@@ -14,7 +14,7 @@ import CRequest from "@/request/CRequest";
 
 let tableData = ref([])
 
-onBeforeMount((()=>{
+onBeforeMount((() => {
   CRequest.get('/getContract').then((res1) => {
     tableData.value = res1.data.data.data
     console.log(tableData)

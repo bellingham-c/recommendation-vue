@@ -73,12 +73,12 @@ let tempInfo = reactive({
 })
 
 const cooperate = (name) => {
-  let formData=new FormData()
-  formData.append("Eshop  ",tempInfo.arr.Id)
+  let formData = new FormData()
+  formData.append("Eshop  ", tempInfo.arr.Id)
   const r = confirm("你确定要与" + name + "合作吗?")
   if (r === true) {
     console.log(formData.Id)
-    CRequest.post('/save',formData).then((res)=>{
+    CRequest.post('/save', formData).then((res) => {
       console.log(res)
     })
     centerDialogVisible.value = false

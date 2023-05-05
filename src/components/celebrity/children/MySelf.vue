@@ -244,8 +244,8 @@ const options = [
 const deleteAddr = (item) => {
   const flag = confirm("你确定要删除这条记录吗?")
   if (flag) {
-    const params=new FormData()
-    params.append("id",item.Id)
+    const params = new FormData()
+    params.append("id", item.Id)
     CRequest.post("/deleteAddr", params).then((res) => {
       if (res.status === 200) {
         alert("删除成功")

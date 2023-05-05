@@ -99,30 +99,30 @@ let goods = ref({
   Username: "",
   Name: "",
   Phonenumber: "",
-  Email:"",
+  Email: "",
   Age: "",
   Platform: "",
   PlatformUrl: "",
   Intro: ""
 })
 
-const update=()=>{
-  centerDialogVisible.value=true
-  goods.value=info.arr
+const update = () => {
+  centerDialogVisible.value = true
+  goods.value = info.arr
 }
 
-const change=(e)=>{
-  let formData=new FormData()
-  formData.append("file",e.target.files[0])
-  formData.append("tel",info.arr.Phonenumber)
-  formData.append("username",info.arr.Username)
-  ERequest.post('/upload',formData).then((res)=>{
-    if (res.data.data.url!==null){
-      imgFlag=false
+const change = (e) => {
+  let formData = new FormData()
+  formData.append("file", e.target.files[0])
+  formData.append("tel", info.arr.Phonenumber)
+  formData.append("username", info.arr.Username)
+  ERequest.post('/upload', formData).then((res) => {
+    if (res.data.data.url !== null) {
+      imgFlag = false
       alert("修改成功")
       router.go('/eshop/myself')
-    }else{
-      imgFlag=false
+    } else {
+      imgFlag = false
       alert("修改失败")
     }
   })
@@ -130,7 +130,7 @@ const change=(e)=>{
 
 const updateInfo = () => {
   ERequest.post('/update', goods.value).then((res) => {
-    console.log("res",res)
+    console.log("res", res)
   })
 }
 
@@ -142,7 +142,7 @@ onBeforeMount((() => {
 </script>
 
 <style scoped>
-.btn{
+.btn {
   padding: 15px;
   display: block;
   margin: 0 auto;

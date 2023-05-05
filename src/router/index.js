@@ -44,14 +44,14 @@ const routes = [
             {
                 path: "myself",
                 component: shopInfo,
-                children:[
+                children: [
                     {
-                        path:'info',
-                        component:myselfInfo
-                    } ,
+                        path: 'info',
+                        component: myselfInfo
+                    },
                     {
-                        path:'order',
-                        component:myOrder
+                        path: 'order',
+                        component: myOrder
                     }
                 ]
             }

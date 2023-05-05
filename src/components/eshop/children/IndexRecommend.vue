@@ -1,5 +1,5 @@
 <template>
-<div>index recommend</div>
+  <div>index recommend</div>
 </template>
 
 <script>

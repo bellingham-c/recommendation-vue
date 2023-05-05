@@ -52,11 +52,13 @@ const change = (num) => {
   width: 80%;
   height: 60px;
 }
+
 a {
   width: 20%;
   margin-top: 20px;
   margin-left: 40%;
 }
+
 .login {
   position: absolute;
   top: 50%;
@@ -67,6 +69,7 @@ a {
   border-radius: 20px;
   background-color: white;
 }
+
 .videoContainer {
   position: fixed;
   width: 100%;
@@ -74,6 +77,7 @@ a {
   overflow: hidden;
   z-index: -100;
 }
+
 .videoContainer:before {
   content: "";
   position: absolute;
@@ -85,6 +89,7 @@ a {
   left: 0;
   background: rgba(25, 29, 34, .65);
 }
+
 video {
   position: fixed;
   right: 0;

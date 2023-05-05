@@ -14,7 +14,7 @@ import ERequest from "@/request/ERequest";
 
 let tableData = ref([])
 
-onBeforeMount((()=>{
+onBeforeMount((() => {
   ERequest.get('/getContract').then((res1) => {
     tableData.value = res1.data.data.data
     console.log(tableData)
