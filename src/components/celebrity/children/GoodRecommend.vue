@@ -64,9 +64,16 @@ const centerDialogVisible = ref(false)
 const tempGood = ref()
 
 const buy = (good) => {
-  CRequest.post("/order",good).then((res)=>{
-    console.log(res)
-  })
+  const flag = confirm("你确定要购买"+ good.Name+ "吗？")
+  if (flag === true) {
+    CRequest.post("/order", good).then((res) => {
+      if (res.status === 200) {
+        alert("购买成功")
+      } else {
+        alert("购买失败")
+      }
+    })
+  }
 }
 
 const detail = (good) => {
