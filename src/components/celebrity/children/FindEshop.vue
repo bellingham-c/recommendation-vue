@@ -74,7 +74,7 @@ let tempInfo = reactive({
 
 const cooperate = (name) => {
   let formData = new FormData()
-  formData.append("Eshop  ", tempInfo.arr.Id)
+  formData.append("Eshop", tempInfo.arr.Id)
   const r = confirm("你确定要与" + name + "合作吗?")
   if (r === true) {
     CRequest.post('/save', formData).then((res) => {
