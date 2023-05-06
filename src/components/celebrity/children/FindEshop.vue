@@ -77,14 +77,14 @@ const cooperate = (name) => {
   formData.append("Eshop  ", tempInfo.arr.Id)
   const r = confirm("你确定要与" + name + "合作吗?")
   if (r === true) {
-    console.log(formData.Id)
     CRequest.post('/save', formData).then((res) => {
-      console.log(res)
+      if (res.status===200){
+        centerDialogVisible.value = false
+        Success()
+      }
     })
-    centerDialogVisible.value = false
-    Success()
   } else {
-    console.log("shibai")
+    Error()
   }
 }
 
@@ -94,6 +94,10 @@ const Success = () => {
     message: '已成功发送合作请求',
     type: 'success',
   })
+}
+
+const Error = () => {
+  ElMessage.error('服务器出错')
 }
 
 const detail = (user) => {

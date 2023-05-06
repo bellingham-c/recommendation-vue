@@ -209,7 +209,7 @@ const detail = (data) => {
 
 //获取全部商品信息
 onMounted(() => {
-  ERequest.get('/getAllGoods').then((res) => {
+  ERequest.get('/getGoods').then((res) => {
     tableData.arr = res.data.data.data
   })
 })

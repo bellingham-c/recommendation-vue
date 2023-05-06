@@ -59,9 +59,12 @@
 
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
-// import CRequest from "@/request/CRequest";
 import ERequest from "@/request/ERequest";
+import {ElMessage} from "element-plus";
 
+/**
+ * 变量
+ * */
 let user = reactive({
   arr: []
 })
@@ -72,6 +75,39 @@ let tempInfo = reactive({
   arr: []
 })
 
+/**
+ * 函数
+ * */
+
+const cooperate = (name) => {
+  let formData = new FormData()
+  formData.append("celebrity", tempInfo.arr.Id)
+  const r = confirm("你确定要与" + name + "合作吗?")
+  if (r === true) {
+    ERequest.post('/save', formData).then((res) => {
+      if (res.status===200){
+        centerDialogVisible.value = false
+        Success()
+      }
+    })
+  } else {
+    Error()
+  }
+}
+
+const Success = () => {
+  ElMessage({
+    showClose: true,
+    message: '已成功发送合作请求',
+    type: 'success',
+  })
+}
+
+const Error = () => {
+  ElMessage.error('服务器出错')
+}
+
+// 查看详细信息
 const detail = (user) => {
   console.log(user)
   tempInfo.arr = user
