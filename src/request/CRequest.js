@@ -2,7 +2,7 @@ import axios from 'axios'
 import JSONbig from "json-bigint";
 
 export const CRequest = axios.create({
-    baseURL: 'http://localhost:1016/celebrity',
+    baseURL: 'http://localhost:9090/celebrity',
     transformResponse: [function (data) {
         //data 原始后台返回的json字符串数据
         //这里的方法，会覆盖axios默认对于返回结果的处理，默认进行的是JSON.parse
