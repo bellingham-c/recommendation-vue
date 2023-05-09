@@ -185,7 +185,7 @@ const changes = (e) => {
     if (res.data.data.url !== null) {
       imgFlag = false
       alert("修改成功")
-      router.go('/eshop/product')
+      router.push('/eshop/product')
     } else {
       imgFlag = false
       alert("修改失败")
@@ -219,7 +219,7 @@ const saveProduct = () => {
     if (res.data.code === 200) {
       saveVisible = false
       alert("添加成功")
-      router.go('/eshop/product')
+      router.push('/eshop/product')
     } else {
       alert("添加失败")
     }
@@ -231,7 +231,7 @@ const updateProduct = () => {
     if (res.status === 200) {
       saveVisible = false
       alert("添加成功")
-      router.go('/eshop/product')
+      router.push('/eshop/product')
     } else {
       alert("添加失败")
     }

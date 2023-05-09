@@ -341,7 +341,7 @@ const change = (e) => {
     if (res.data.data.url !== null) {
       imgFlag = false
       alert("修改成功")
-      router.go('/celebrity/myself')
+      router.push('/celebrity/myself')
     } else {
       imgFlag = false
       alert("修改失败")

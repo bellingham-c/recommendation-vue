@@ -62,6 +62,8 @@ import {ref, reactive} from 'vue'
 import {computed} from "vue";
 import ERequest from '../../request/ERequest'
 import CRequest from '../../request/CRequest'
+import router from "@/router";
+import {ElMessage} from "element-plus";
 
 const isSame = computed(() => {
   return form.password === checkPWD.value;
@@ -89,31 +91,40 @@ const isTelLegal = computed(() => {
 
 // 提交注册信息
 const onSubmit = () => {
-  const params = new URLSearchParams()
-  params.append("username", form.username)
+  const params = new FormData()
+  params.append("account", form.username)
   params.append("name", form.name)
   params.append("phonenumber", form.phonenumber)
   params.append("password", form.password)
   if (identify.value === '商家') {
     ERequest.post('/register', params).then((res) => {
       if (res.data.code === 200) {
-        console.log(res.data)
-        alert("注册成功！")
+        Success()
+        router.push('/')
       } else {
-        console.log(res.data)
-
-        alert("注册失败！")
+        Fail()
       }
     })
   } else {
     CRequest.post('/register', params).then((res) => {
       if (res.data.code === 200) {
-        alert("注册成功！")
+        Success()
+        router.push('/')
       } else {
-        alert("注册失败！")
+        Fail()
       }
     })
   }
+}
+
+const Success = () => {
+  ElMessage({
+    message: '注册成功',
+    type: 'success',
+  })
+}
+const Fail = () => {
+  ElMessage.error('注册失败')
 }
 </script>
 

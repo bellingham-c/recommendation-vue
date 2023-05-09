@@ -57,7 +57,7 @@
     <div class="box">
       <div class="little-box">
         <div style="width: 40px">账号</div>
-        <el-input disabled v-model="goods.Username" placeholder="账号"/>
+        <el-input disabled v-model="users.Username" placeholder="账号"/>
       </div>
 
       <div class="little-box">
@@ -166,6 +166,7 @@
 import {onBeforeMount, reactive, ref,} from "vue";
 import ERequest from "@/request/ERequest";
 import router from "@/router";
+import {ElMessage} from "element-plus";
 
 /***
  * 变量
@@ -289,6 +290,7 @@ const regionChange = (data) => {
 // 更新个人信息接口
 const update = () => {
   centerDialogVisible.value = true
+  console.log(centerDialogVisible.value)
   users.value = info.arr
 }
 
@@ -302,7 +304,7 @@ const change = (e) => {
     if (res.data.data.url !== null) {
       imgFlag = false
       alert("修改成功")
-      router.go('/eshop/myself')
+      router.push('/eshop/myself')
     } else {
       imgFlag = false
       alert("修改失败")
@@ -312,9 +314,32 @@ const change = (e) => {
 
 // 修改个人信息接口
 const updateInfo = () => {
-  ERequest.post('/update', users.value).then((res) => {
-    console.log("res", res)
+  const params=new FormData()
+  params.append("name",users.value.Name)
+  params.append("phonenumber",users.value.Phonenumber)
+  params.append("email",users.value.Email)
+  params.append("age",users.value.Age)
+  params.append("Platform",users.value.Platform)
+  params.append("PlatformUrl",users.value.PlatformUrl)
+  params.append("intro",users.value.Intro)
+  ERequest.post('/update', params).then((res) => {
+    if (res.status===200){
+      Success()
+      centerDialogVisible.value = false
+    }else {
+      Fail()
+    }
   })
+}
+
+const Success = () => {
+  ElMessage({
+    message: 'Success',
+    type: 'success',
+  })
+}
+const Fail = () => {
+  ElMessage.error('Fail')
 }
 
 onBeforeMount((() => {
