@@ -2,7 +2,7 @@
   <div class="left-box">
     <div class="block">
       <el-avatar :size="300" :src="info.arr.Avatar" class="header"/>
-      <el-button style="display:block;margin:0 auto;" @click="imgFlag=true">修改头像</el-button>
+      <el-button style="display:block;margin:0 auto;" @click=changeImgState(1)>修改头像</el-button>
     </div>
   </div>
   <div class="right-box">
@@ -11,7 +11,7 @@
         :column="4"
         direction="vertical"
     >
-      <el-descriptions-item label="账号">{{ info.arr.Username }}</el-descriptions-item>
+      <el-descriptions-item label="账号">{{ info.arr.account }}</el-descriptions-item>
       <el-descriptions-item label="昵称">{{ info.arr.Name }}</el-descriptions-item>
       <el-descriptions-item label="电话">{{ info.arr.Phonenumber }}</el-descriptions-item>
       <el-descriptions-item label="邮箱">{{ info.arr.Email }}</el-descriptions-item>
@@ -57,7 +57,7 @@
     <div class="box">
       <div class="little-box">
         <div style="width: 40px">账号</div>
-        <el-input disabled v-model="users.Username" placeholder="账号"/>
+        <el-input disabled v-model="users.account" placeholder="账号"/>
       </div>
 
       <div class="little-box">
@@ -103,7 +103,7 @@
       <input type="file" accept="image/*" @change="change">
       <br>
       <div class="btn">
-        <el-button type="danger" @click="imgFlag=false">取消</el-button>
+        <el-button type="danger" @click=changeImgState(0)>取消</el-button>
       </div>
     </div>
   </div>
@@ -218,6 +218,10 @@ let users = ref({
 /**
  * 方法
  * */
+const changeImgState=(i)=>{
+  imgFlag.value = i === 1;
+}
+
 // 删除地址
 const deleteAddr = (item) => {
   const flag = confirm("你确定要删除这条记录吗?")
@@ -299,14 +303,14 @@ const change = (e) => {
   let formData = new FormData()
   formData.append("file", e.target.files[0])
   formData.append("tel", info.arr.Phonenumber)
-  formData.append("username", info.arr.Username)
+  formData.append("username", info.arr.account)
   ERequest.post('/upload', formData).then((res) => {
     if (res.data.data.url !== null) {
-      imgFlag = false
+      imgFlag.value = false
       alert("修改成功")
       router.push('/eshop/myself')
     } else {
-      imgFlag = false
+      imgFlag.value = false
       alert("修改失败")
     }
   })

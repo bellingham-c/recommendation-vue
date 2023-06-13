@@ -2,7 +2,7 @@
   <div class="left-box">
     <div class="block">
       <el-avatar :size="300" :src="info.arr.Avatar" class="header"/>
-      <el-button type="primary" style="display:block;margin:0 auto;" @click="imgFlag=true">修改头像</el-button>
+      <el-button type="primary" style="display:block;margin:0 auto;" @click=changeImgState(1)>修改头像</el-button>
       <div class="credit">
         <div class="reputation">
           信誉积分
@@ -25,7 +25,7 @@
         :column="4"
         direction="vertical"
     >
-      <el-descriptions-item label="账号">{{ info.arr.username }}</el-descriptions-item>
+      <el-descriptions-item label="账号">{{ info.arr.account }}</el-descriptions-item>
       <el-descriptions-item label="昵称">{{ info.arr.name }}</el-descriptions-item>
       <el-descriptions-item label="电话">{{ info.arr.phonenumber }}</el-descriptions-item>
       <el-descriptions-item label="地址" :span="2">Suzhou</el-descriptions-item>
@@ -122,7 +122,7 @@
       <input type="file" accept="image/*" @change="change">
       <br>
       <div class="btn">
-        <el-button type="danger" @click="imgFlag=false">取消</el-button>
+        <el-button type="danger" @click=changeImgState(0)>取消</el-button>
       </div>
     </div>
   </div>
@@ -240,6 +240,11 @@ const options = [
 /**
  * 方法
  * */
+
+const changeImgState=(i)=>{
+  imgFlag.value = i === 1;
+}
+
 // 删除地址
 const deleteAddr = (item) => {
   const flag = confirm("你确定要删除这条记录吗?")
@@ -336,14 +341,16 @@ const change = (e) => {
   let formData = new FormData()
   formData.append("file", e.target.files[0])
   formData.append("tel", info.arr.phonenumber)
-  formData.append("username", info.arr.username)
+  formData.append("username", info.arr.account)
+  console.log(info.arr)
+  console.log(info.arr.account)
   CRequest.post('/upload', formData).then((res) => {
     if (res.data.data.url !== null) {
-      imgFlag = false
+      imgFlag.value = false
       alert("修改成功")
       router.push('/celebrity/myself')
     } else {
-      imgFlag = false
+      imgFlag.value = false
       alert("修改失败")
     }
   })
