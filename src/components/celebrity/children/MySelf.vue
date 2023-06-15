@@ -342,8 +342,6 @@ const change = (e) => {
   formData.append("file", e.target.files[0])
   formData.append("tel", info.arr.phonenumber)
   formData.append("username", info.arr.account)
-  console.log(info.arr)
-  console.log(info.arr.account)
   CRequest.post('/upload', formData).then((res) => {
     if (res.data.data.url !== null) {
       imgFlag.value = false
