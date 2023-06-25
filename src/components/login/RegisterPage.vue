@@ -9,12 +9,12 @@
     <div class="register-form">
       <form>
         <p>欢迎加入我们</p>
-        <el-input style="width: 80%;height: 60px; margin-left: 10%; font-size: 25px; margin-top: 10px"
-                  v-model="form.username" placeholder="账号"/>
         <el-input style="width: 80%;height: 60px; margin-left: 10%;font-size: 25px; margin-top: 10px"
-                  v-model="form.name" placeholder="昵称"/>
-        <el-input style="width: 80%;height: 60px; margin-left: 10%;font-size: 25px; margin-top: 10px"
-                  v-model="form.phonenumber" placeholder="手机号"/>
+                  v-model="form.email" placeholder="电子邮箱"/>
+        <el-input style="width: 50%;height: 60px; margin-left: 10%;font-size: 25px; margin-top: 10px"
+                  v-model="MailCode" placeholder="验证码"/>
+        <el-button @click="SendMailCode" style="width: 20%;height: 60px; margin-left: 10%;font-size: 25px; margin-top: 10px">获取验证码
+        </el-button>
         <el-input type="password" style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
                   v-model="form.password" placeholder="密码"/>
         <el-input type="password" style="width: 80%;height: 60px; font-size: 25px; margin-left: 10%;margin-top: 10px"
@@ -30,29 +30,20 @@
             v-show="!isSame"
             style="width: 80%;height: 40px; margin-left: 10%;font-size: 25px; margin-top: 10px"
             type="error"
-            description="两次密码不一致"
+            :description=errMsg
+            show-icon
+        />
+        <el-alert
+            v-show="!isMailLegal"
+            style="width: 80%;height: 40px; margin-left: 10%;font-size: 25px; margin-top: 10px"
+            type="error"
+            description="邮箱不合法"
             show-icon
         />
         <el-button @click="onSubmit()" style="width: 80%;height: 60px;margin-left: 10%;margin-top: 10px" type="primary">
           注册
         </el-button>
       </form>
-      <div class="is-legal" v-show="!isTelLegal">
-        <svg t="1668772943828" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-             p-id="2672" width="200" height="200">
-          <path
-              d="M512 929.959184c-230.4 0-417.959184-187.559184-417.959184-417.959184s187.559184-417.959184 417.959184-417.959184 417.959184 187.559184 417.959184 417.959184-187.559184 417.959184-417.959184 417.959184z m0-794.122449c-207.412245 0-376.163265 168.75102-376.163265 376.163265s168.75102 376.163265 376.163265 376.163265 376.163265-168.75102 376.163265-376.163265-168.75102-376.163265-376.163265-376.163265z"
-              p-id="2673" fill="#d81e06"></path>
-          <path
-              d="M512 690.677551m-31.346939 0a31.346939 31.346939 0 1 0 62.693878 0 31.346939 31.346939 0 1 0-62.693878 0Z"
-              p-id="2674" fill="#d81e06"></path>
-          <path
-              d="M512 584.097959c-11.493878 0-20.897959-9.404082-20.897959-20.897959v-261.22449c0-11.493878 9.404082-20.897959 20.897959-20.897959s20.897959 9.404082 20.897959 20.897959v261.22449c0 12.016327-9.404082 20.897959-20.897959 20.897959z"
-              p-id="2675" fill="#d81e06"></path>
-        </svg>
-        <span>手机号不合法</span>
-      </div>
-
     </div>
   </div>
 </template>
@@ -66,65 +57,99 @@ import router from "@/router";
 import {ElMessage} from "element-plus";
 
 const isSame = computed(() => {
+  if (form.password !== checkPWD.value) {
+    SetErrMsg("两次密码不一致")
+    return false
+  }
   return form.password === checkPWD.value;
 })
 
 // do not use same name with ref
 const form = reactive({
-  username: '',
-  name: '',
-  phonenumber: '',
+  email: '',
   password: '',
 })
+
+const errMsg = ref("")
+
+const MailCode = ref("")
 
 const checkPWD = ref("")
 const identify = ref("")
 
-// 验证手机号是否合法
-const reg_tel = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
-const isTelLegal = computed(() => {
-  return reg_tel.test(form.phonenumber);
+// 验证邮箱是否合法
+// const reg_tel = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const reg_tel = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const isMailLegal = computed(() => {
+  if (form.email!==""){
+    return  reg_tel.test(form.email)
+  }
+  return true
 })
 
 
-// 验证手机号是否被注册
+// 设置错误信息
+const SetErrMsg = (msg) => {
+  errMsg.value = msg
+}
 
 // 提交注册信息
 const onSubmit = () => {
   const params = new FormData()
-  params.append("account", form.username)
-  params.append("name", form.name)
-  params.append("phonenumber", form.phonenumber)
+  params.append("email", form.email)
   params.append("password", form.password)
+  params.append("mail_code", MailCode.value)
   if (identify.value === '商家') {
     ERequest.post('/register', params).then((res) => {
       if (res.data.code === 200) {
-        Success()
+        Success("注册成功")
         router.push('/')
       } else {
-        Fail()
+        Fail("注册失败")
       }
+    }).catch((err) => {
+      Fail(err.response.data.msg)
     })
   } else {
     CRequest.post('/register', params).then((res) => {
+      console.log(6)
       if (res.data.code === 200) {
-        Success()
+        Success("注册成功")
         router.push('/')
       } else {
-        Fail()
+        Fail("注册失败")
       }
+    }).catch((err) => {
+      Fail(err.response.data.msg)
     })
   }
 }
 
-const Success = () => {
+const SendMailCode=()=>{
+  if (form.email===""){
+    Fail("请输入邮箱")
+  }else {
+    const params=new FormData()
+    params.append("email",form.email)
+    CRequest.post("/send/mail/code",params).then((res)=>{
+      if (res.data.code===200){
+        Success("验证码发送成功")
+      }
+    }).catch((err)=>{
+      Fail(err.response.data.msg)
+    })
+  }
+
+}
+
+const Success = (msg) => {
   ElMessage({
-    message: '注册成功',
+    message: msg,
     type: 'success',
   })
 }
-const Fail = () => {
-  ElMessage.error('注册失败')
+const Fail = (msg) => {
+  ElMessage.error(msg)
 }
 </script>
 
