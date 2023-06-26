@@ -139,7 +139,6 @@ const SendMailCode=()=>{
       Fail(err.response.data.msg)
     })
   }
-
 }
 
 const Success = (msg) => {

@@ -10,7 +10,6 @@
     </video>
   </div>
   <div class="login">
-
     <template v-if="identify">
       <CLogin/>
     </template>
